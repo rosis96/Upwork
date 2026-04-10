@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>creatorXchange — Acquisition System by Ascendly</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0f14;--ink-2:#3a3f4d;--ink-3:#6b7280;
+  --border:#e8eaed;--surface:#f7f8fa;--white:#ffffff;
+  --accent:#1a56db;--accent-2:#0e3ba8;--accent-lt:#eff4ff;
+  --green:#059669;--green-lt:#ecfdf5;--green-dk:#047857;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --coral:#dc2626;--coral-lt:#fef2f2;
+  --radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:62px}
+.nav-brand{font-family:'Sora',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:center;gap:10px}
+.nav-brand-sub{font-size:12px;font-weight:400;color:var(--ink-3);border-left:1px solid var(--border);padding-left:10px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--ink-2);font-size:13px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{background:var(--ink);color:#fff;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--accent)}
+
+.hero{padding:88px 0 72px;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#f4f7ff 0%,#fff 100%)}
+.container{max-width:1200px;margin:0 auto;padding:0 48px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:5px 14px;border-radius:100px;margin-bottom:20px}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(32px,5vw,54px);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink);max-width:720px;margin:0 auto 16px}
+.hero h1 span{color:var(--accent)}
+.hero-sub{font-size:17px;color:var(--ink-2);max-width:540px;margin:0 auto 10px;line-height:1.65}
+.hero-note{font-size:13px;color:var(--ink-3);font-style:italic;margin-bottom:40px}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.stat-num span{color:var(--accent)}
+.stat-label{font-size:12px;color:var(--ink-3);margin-top:2px}
+
+section{padding:80px 0}
+.section-header{text-align:center;margin-bottom:52px}
+.section-header h2{font-family:'Sora',sans-serif;font-size:clamp(24px,3.5vw,36px);font-weight:800;letter-spacing:-.025em;margin-bottom:10px}
+.section-header p{font-size:15px;color:var(--ink-2);max-width:500px;margin:0 auto}
+
+/* ═══════════════════════════════════════════════════════
+   HORIZONTAL PROCESS DIAGRAM
+═══════════════════════════════════════════════════════ */
+.process-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+.process-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.process-header{background:var(--ink);padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.process-header-left{display:flex;align-items:center;gap:8px}
+.ph-dot{width:10px;height:10px;border-radius:50%}
+.ph-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:#fff;margin-left:8px;letter-spacing:.04em}
+.ph-subtitle{font-size:11px;color:rgba(255,255,255,.45)}
+
+/* SWIMLANE CONTAINER */
+.swimlanes{padding:0}
+
+/* LANE ROW */
+.lane{display:grid;border-bottom:1px solid var(--border)}
+.lane:last-child{border-bottom:none}
+.lane-label-col{width:140px;min-width:140px;background:var(--surface);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;justify-content:center}
+.lane-name{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.lane-sub{font-size:11px;color:var(--ink-3);line-height:1.4}
+.lane-steps{flex:1;padding:16px 20px;display:flex;align-items:center;gap:0;overflow-x:auto}
+
+/* STEP NODE */
+.pnode{display:flex;align-items:center;gap:0;flex-shrink:0}
+.pbox{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center;min-width:120px;max-width:140px;cursor:pointer;transition:all .2s;position:relative}
+.pbox:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-lt);transform:translateY(-1px)}
+.pbox.active{border-color:var(--accent);background:var(--accent-lt);box-shadow:0 0 0 3px rgba(26,86,219,.15)}
+.pbox-num{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--ink-3);margin-bottom:6px;letter-spacing:.06em}
+.pbox-icon{font-size:20px;margin-bottom:6px;line-height:1}
+.pbox-label{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.2}
+.pbox-tool{font-size:10px;color:var(--ink-3)}
+.pbox.blue{border-color:#bfdbfe;background:#eff6ff}
+.pbox.blue .pbox-label{color:#1d4ed8}
+.pbox.blue .pbox-num{color:#3b82f6}
+.pbox.green{border-color:#bbf7d0;background:#f0fdf4}
+.pbox.green .pbox-label{color:#15803d}
+.pbox.green .pbox-num{color:#16a34a}
+.pbox.purple{border-color:#ddd6fe;background:#f5f3ff}
+.pbox.purple .pbox-label{color:#6d28d9}
+.pbox.purple .pbox-num{color:#7c3aed}
+.pbox.amber{border-color:#fde68a;background:#fffbeb}
+.pbox.amber .pbox-label{color:#b45309}
+.pbox.amber .pbox-num{color:#d97706}
+.pbox.outcome{border-color:#bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-width:2px}
+.pbox.outcome .pbox-label{color:#15803d}
+
+/* ARROWS between nodes */
+.parrow{display:flex;align-items:center;justify-content:center;width:32px;flex-shrink:0;color:var(--ink-3)}
+.parrow svg{display:block}
+.parrow.dashed svg{stroke-dasharray:3 2;opacity:.5}
+
+/* CROSS-LANE CONNECTORS — visual only */
+.connector-row{height:32px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 160px 0 160px;gap:0;overflow-x:auto}
+.connector-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent)}
+.connector-down{width:140px;min-width:140px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.connector-down svg{stroke:var(--ink-3);opacity:.4}
+
+/* DETAIL DRAWER */
+.detail-drawer{display:none;background:var(--surface);border-top:1px solid var(--border)}
+.detail-drawer.open{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.drawer-col{background:var(--white);padding:20px 24px}
+.drawer-col-title{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.drawer-item{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.drawer-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.drawer-item-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.drawer-item-body{font-size:13px;color:var(--ink-2);line-height:1.6}
+.drawer-close{display:flex;align-items:center;justify-content:flex-end;padding:10px 20px;border-top:1px solid var(--border);background:var(--white);grid-column:1/-1}
+.drawer-close button{background:none;border:1px solid var(--border);padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.drawer-close button:hover{border-color:var(--ink);color:var(--ink)}
+
+/* LEGEND */
+.legend{padding:14px 20px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-3);font-weight:500}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* ═══════════════════════════════════════════════════════
+   DETAIL CARDS (4 engines below)
+═══════════════════════════════════════════════════════ */
+.engines-section{background:var(--white)}
+.overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.overview-card{background:var(--white);padding:24px 20px;cursor:pointer;transition:background .15s;border-top:3px solid transparent}
+.overview-card:hover,.overview-card.active{background:var(--surface)}
+.overview-card.active{border-top-color:var(--accent)}
+.oc-num{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--ink-3);margin-bottom:8px}
+.oc-icon{font-size:22px;margin-bottom:10px}
+.oc-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.oc-desc{font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:10px}
+.oc-badge{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px}
+.badge-blue{background:var(--accent-lt);color:var(--accent)}
+.badge-green{background:var(--green-lt);color:var(--green-dk)}
+.badge-purple{background:var(--purple-lt);color:var(--purple)}
+.badge-amber{background:var(--amber-lt);color:var(--amber)}
+
+.engine-panel{display:none;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:1px}
+.engine-panel.open{display:block}
+.ep-header{background:var(--ink);padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.ep-header h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.ep-header p{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+.ep-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.ep-close:hover{background:rgba(255,255,255,.2)}
+.ep-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.ep-step{background:var(--white);padding:20px 22px}
+.ep-step-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ep-step-num{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--ink-3);letter-spacing:.08em}
+.ep-step-tool{font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--surface);border:1px solid var(--border);color:var(--ink-3)}
+.ep-step-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.ep-step-desc{font-size:12px;color:var(--ink-2);line-height:1.6}
+.ep-step.hl-blue{border-top:2px solid var(--accent)}
+.ep-step.hl-green{border-top:2px solid var(--green)}
+.ep-step.hl-purple{border-top:2px solid var(--purple)}
+.ep-step.hl-amber{border-top:2px solid var(--amber)}
+
+/* TOOLS */
+.tools-section{background:var(--surface);border-top:1px solid var(--border)}
+.tools-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.tool-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;text-align:center;transition:all .2s}
+.tool-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:#c7d9ff}
+.tool-icon{font-size:22px;margin-bottom:8px}
+.tool-name{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px}
+.tool-role{font-size:11px;color:var(--ink-3);line-height:1.4}
+
+/* PRINCIPLES */
+.principles-section{background:var(--white);border-top:1px solid var(--border)}
+.principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;gap:14px}
+.pc-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-lt);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.pc h4{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px}
+.pc p{font-size:12px;color:var(--ink-2);line-height:1.55}
+
+.cta-section{background:linear-gradient(135deg,#0e1726 0%,#1a3a6e 100%);padding:72px 0;text-align:center}
+.cta-section h2{font-family:'Sora',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:10px}
+.cta-section p{font-size:15px;color:rgba(255,255,255,.6);max-width:440px;margin:0 auto 28px;line-height:1.65}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--accent);padding:13px 30px;border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:-.01em;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+
+footer{background:var(--white);border-top:1px solid var(--border);padding:22px 48px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Sora',sans-serif;font-weight:800;font-size:15px;color:var(--accent)}
+.footer-copy{font-size:12px;color:var(--ink-3)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;animation:fadeUp .55s ease forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}
+
+@media(max-width:960px){
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+  .principles-grid,.ep-steps{grid-template-columns:1fr 1fr}
+  .overview-grid{grid-template-columns:repeat(2,1fr)}
+  nav{padding:0 24px}.nav-links{display:none}
+  .container{padding:0 24px}
+}
+@media(max-width:600px){
+  .tools-grid,.ep-steps,.overview-grid,.principles-grid{grid-template-columns:1fr}
+  section{padding:56px 0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    creatorXchange
+    <span class="nav-brand-sub">Acquisition System by Ascendly</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#process">Process</a></li>
+    <li><a href="#engines">Engines</a></li>
+    <li><a href="#tools">Stack</a></li>
+    <li><a href="#principles">Principles</a></li>
+  </ul>
+  <a class="nav-cta" href="#cta">Book a Call</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up d1">Distribution Economy Infrastructure</div>
+    <h1 class="fade-up d2">The Revenue Machine<br><span>Behind creatorXchange.</span></h1>
+    <p class="hero-sub fade-up d3">Four acquisition systems running simultaneously — designed to be operated by CDPs without management overhead.</p>
+    <p class="hero-note fade-up d3">Simple. Repeatable. If it can't be run by someone else, it's not complete.</p>
+    <div class="hero-stats fade-up d4">
+      <div class="stat"><div class="stat-num">7<span>d</span></div><div class="stat-label">full system live</div></div>
+      <div class="stat"><div class="stat-num">21<span>d</span></div><div class="stat-label">warm-up &amp; campaign prep</div></div>
+      <div class="stat"><div class="stat-num">4<span>×</span></div><div class="stat-label">acquisition channels</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">manual steps after setup</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     HORIZONTAL PROCESS DIAGRAM
+════════════════════════════════════════════════════ -->
+<section class="process-section" id="process">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Process Flow</div>
+      <h2>How Every Lead Moves Through the System.</h2>
+      <p>Click any step to see exactly what happens at that stage.</p>
+    </div>
+
+    <div class="process-wrap">
+      <div class="process-header">
+        <div class="process-header-left">
+          <div class="ph-dot" style="background:#ff5f57"></div>
+          <div class="ph-dot" style="background:#ffbd2e"></div>
+          <div class="ph-dot" style="background:#28c840"></div>
+          <span class="ph-title">Acquisition pipeline — end-to-end</span>
+        </div>
+        <span class="ph-subtitle">Click any node to expand</span>
+      </div>
+
+      <!-- ── LANE 1: COLD OUTBOUND ── -->
+      <div class="lane" style="grid-template-columns:140px 1fr">
+        <div class="lane-label-col">
+          <div class="lane-name" style="color:#1d4ed8">Cold outbound</div>
+          <div class="lane-sub">Email + LinkedIn</div>
+        </div>
+        <div class="lane-steps">
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-list')">
+              <div class="pbox-num">01</div>
+              <div class="pbox-icon">🎯</div>
+              <div class="pbox-label">Target list</div>
+              <div class="pbox-tool">Apollo.io</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-enrich')">
+              <div class="pbox-num">02</div>
+              <div class="pbox-icon">🔍</div>
+              <div class="pbox-label">Enrich signals</div>
+              <div class="pbox-tool">Clay</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-verify')">
+              <div class="pbox-num">03</div>
+              <div class="pbox-icon">✅</div>
+              <div class="pbox-label">Verify emails</div>
+              <div class="pbox-tool">Reoon</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-email')">
+              <div class="pbox-num">04</div>
+              <div class="pbox-icon">📧</div>
+              <div class="pbox-label">3-step email</div>
+              <div class="pbox-tool">Instantly</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-linkedin')">
+              <div class="pbox-num">05</div>
+              <div class="pbox-icon">💼</div>
+              <div class="pbox-label">LinkedIn DMs</div>
+              <div class="pbox-tool">Aimfox</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox blue" onclick="showDrawer('d-loom')" style="border-color:#93c5fd;background:#dbeafe">
+              <div class="pbox-num">06</div>
+              <div class="pbox-icon">🎥</div>
+              <div class="pbox-label">Loom video</div>
+              <div class="pbox-tool">Warm signal trigger</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox outcome" onclick="showDrawer('d-reply')">
+              <div class="pbox-num">OUT</div>
+              <div class="pbox-icon">💬</div>
+              <div class="pbox-label">Reply → booking</div>
+              <div class="pbox-tool">Calendly auto-sent</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LANE 2: WORKSHOP FUNNEL ── -->
+      <div class="lane" style="grid-template-columns:140px 1fr">
+        <div class="lane-label-col">
+          <div class="lane-name" style="color:#15803d">Workshop funnel</div>
+          <div class="lane-sub">CDP-operated</div>
+        </div>
+        <div class="lane-steps">
+          <div class="pnode">
+            <div class="pbox green" onclick="showDrawer('d-ws-page')">
+              <div class="pbox-num">01</div>
+              <div class="pbox-icon">📄</div>
+              <div class="pbox-label">Registration page</div>
+              <div class="pbox-tool">Typeform</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox green" onclick="showDrawer('d-ws-nurture')">
+              <div class="pbox-num">02</div>
+              <div class="pbox-icon">📬</div>
+              <div class="pbox-label">Pre-nurture emails</div>
+              <div class="pbox-tool">Instantly — 3 emails</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox green" onclick="showDrawer('d-ws-live')">
+              <div class="pbox-num">03</div>
+              <div class="pbox-icon">🎤</div>
+              <div class="pbox-label">Live workshop</div>
+              <div class="pbox-tool">CDP delivers</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox green" onclick="showDrawer('d-ws-offer')" style="border-color:#86efac;background:#dcfce7">
+              <div class="pbox-num">04</div>
+              <div class="pbox-icon">⏱️</div>
+              <div class="pbox-label">48hr offer close</div>
+              <div class="pbox-tool">3-email sequence</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox outcome" onclick="showDrawer('d-reply')">
+              <div class="pbox-num">OUT</div>
+              <div class="pbox-icon">📅</div>
+              <div class="pbox-label">Strategy call booked</div>
+              <div class="pbox-tool">Calendly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LANE 3: LEAD CAPTURE ── -->
+      <div class="lane" style="grid-template-columns:140px 1fr">
+        <div class="lane-label-col">
+          <div class="lane-name" style="color:#6d28d9">Lead capture</div>
+          <div class="lane-sub">All sources → one pipe</div>
+        </div>
+        <div class="lane-steps">
+          <div class="pnode">
+            <div class="pbox purple" onclick="showDrawer('d-sources')">
+              <div class="pbox-num">01</div>
+              <div class="pbox-icon">🌐</div>
+              <div class="pbox-label">All sources in</div>
+              <div class="pbox-tool">Webhook → Make.com</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox purple" onclick="showDrawer('d-enrich')">
+              <div class="pbox-num">02</div>
+              <div class="pbox-icon">🔍</div>
+              <div class="pbox-label">Enrich</div>
+              <div class="pbox-tool">Clay</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox purple" onclick="showDrawer('d-verify')">
+              <div class="pbox-num">03</div>
+              <div class="pbox-icon">✅</div>
+              <div class="pbox-label">Verify</div>
+              <div class="pbox-tool">Reoon</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox purple" onclick="showDrawer('d-score')">
+              <div class="pbox-num">04</div>
+              <div class="pbox-icon">📊</div>
+              <div class="pbox-label">Score 1–10</div>
+              <div class="pbox-tool">Make.com logic</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox purple" onclick="showDrawer('d-route')">
+              <div class="pbox-num">05</div>
+              <div class="pbox-icon">↗️</div>
+              <div class="pbox-label">Route to CDP</div>
+              <div class="pbox-tool">Slack notify</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox outcome" onclick="showDrawer('d-pipeline')">
+              <div class="pbox-num">LIVE</div>
+              <div class="pbox-icon">📋</div>
+              <div class="pbox-label">Notion pipeline</div>
+              <div class="pbox-tool">Shared with CDP</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LANE 4: CONVERSION ── -->
+      <div class="lane" style="grid-template-columns:140px 1fr;border-bottom:none">
+        <div class="lane-label-col">
+          <div class="lane-name" style="color:#b45309">Conversion</div>
+          <div class="lane-sub">First touch → closed</div>
+        </div>
+        <div class="lane-steps">
+          <div class="pnode">
+            <div class="pbox amber" onclick="showDrawer('d-book')">
+              <div class="pbox-num">01</div>
+              <div class="pbox-icon">⚡</div>
+              <div class="pbox-label">Calendly &lt;60s</div>
+              <div class="pbox-tool">Auto-sent on reply</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox amber" onclick="showDrawer('d-brief')">
+              <div class="pbox-num">02</div>
+              <div class="pbox-icon">📝</div>
+              <div class="pbox-label">Pre-call brief</div>
+              <div class="pbox-tool">Make.com → Slack</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox amber" onclick="showDrawer('d-record')">
+              <div class="pbox-num">03</div>
+              <div class="pbox-icon">🎙️</div>
+              <div class="pbox-label">Call recorded</div>
+              <div class="pbox-tool">Fathom</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox amber" onclick="showDrawer('d-followup')" style="border-color:#fcd34d;background:#fef9c3">
+              <div class="pbox-num">04</div>
+              <div class="pbox-icon">📨</div>
+              <div class="pbox-label">Follow-up in 2min</div>
+              <div class="pbox-tool">Make.com + Instantly</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox amber" onclick="showDrawer('d-stale')">
+              <div class="pbox-num">05</div>
+              <div class="pbox-icon">🔄</div>
+              <div class="pbox-label">Stale detection</div>
+              <div class="pbox-tool">Daily 8am check</div>
+            </div>
+          </div>
+          <div class="parrow"><svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M2 8h20M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pnode">
+            <div class="pbox outcome" onclick="showDrawer('d-close')">
+              <div class="pbox-num">WIN</div>
+              <div class="pbox-icon">🏆</div>
+              <div class="pbox-label">Deal closed</div>
+              <div class="pbox-tool">System runs on</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAIL DRAWER -->
+      <div class="detail-drawer" id="drawer">
+        <div class="drawer-col" id="drawer-col-1"></div>
+        <div class="drawer-col" id="drawer-col-2"></div>
+        <div class="drawer-col" id="drawer-col-3"></div>
+        <div class="drawer-close"><button onclick="closeDrawer()">Close ↑</button></div>
+      </div>
+
+      <!-- LEGEND -->
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#dbeafe;border:1.5px solid #93c5fd"></div>Cold outbound lane</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dcfce7;border:1.5px solid #86efac"></div>Workshop funnel lane</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f5f3ff;border:1.5px solid #ddd6fe"></div>Lead capture lane</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fffbeb;border:1.5px solid #fde68a"></div>Conversion lane</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4;border:2px solid #bbf7d0"></div>Output / outcome node</div>
+        <div class="legend-item" style="margin-left:auto;font-style:italic">Click any node to expand detail</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGINES -->
+<section class="engines-section" id="engines">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Four Engines</div>
+      <h2>Every Engine in Detail.</h2>
+      <p>Click any engine to see the full step-by-step workflow.</p>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card" id="tab-1" onclick="openEngine(1)">
+        <div class="oc-num">01</div>
+        <div class="oc-icon">📧</div>
+        <div class="oc-title">Cold Outbound</div>
+        <div class="oc-desc">Targeted lists, verified contacts, personalised sequences across email + LinkedIn from day one.</div>
+        <div class="oc-badge badge-blue">Starts day 1</div>
+      </div>
+      <div class="overview-card" id="tab-2" onclick="openEngine(2)">
+        <div class="oc-num">02</div>
+        <div class="oc-icon">🎤</div>
+        <div class="oc-title">Workshop Funnel</div>
+        <div class="oc-desc">Live workshops converting attendees through a structured offer sequence — fully CDP-operated.</div>
+        <div class="oc-badge badge-green">CDP-operated</div>
+      </div>
+      <div class="overview-card" id="tab-3" onclick="openEngine(3)">
+        <div class="oc-num">03</div>
+        <div class="oc-icon">🌐</div>
+        <div class="oc-title">Lead Capture & Routing</div>
+        <div class="oc-desc">Every source connected. Enriched, verified, scored and routed in under 30 seconds.</div>
+        <div class="oc-badge badge-purple">Zero manual handling</div>
+      </div>
+      <div class="overview-card" id="tab-4" onclick="openEngine(4)">
+        <div class="oc-num">04</div>
+        <div class="oc-icon">🏆</div>
+        <div class="oc-title">Conversion System</div>
+        <div class="oc-desc">First reply to closed deal — every follow-up automated, every stale deal re-engaged.</div>
+        <div class="oc-badge badge-amber">No deal goes quiet</div>
+      </div>
+    </div>
+
+    <!-- ENGINE PANELS -->
+    <div class="engine-panel" id="panel-1">
+      <div class="ep-header"><div><h3>Cold Outbound System</h3><p>Email + LinkedIn running in parallel from day one</p></div><button class="ep-close" onclick="closeEngine(1)">Close ↑</button></div>
+      <div class="ep-steps">
+        <div class="ep-step hl-blue"><div class="ep-step-top"><span class="ep-step-num">STEP 01</span><span class="ep-step-tool">Apollo.io</span></div><div class="ep-step-title">Build target list</div><div class="ep-step-desc">Creators, brands, labels, agencies filtered by type, size and platform signals. 300–500 qualified prospects per batch. Buying signals included — recent hires, campaign launches, growth signals.</div></div>
+        <div class="ep-step hl-blue"><div class="ep-step-top"><span class="ep-step-num">STEP 02</span><span class="ep-step-tool">Clay</span></div><div class="ep-step-title">Enrich with buying signals</div><div class="ep-step-desc">LinkedIn profile, company data, recent content activity, job changes pulled per contact. Personalisation variable generated for each — the specific signal that makes line 1 of the email feel handwritten.</div></div>
+        <div class="ep-step hl-blue"><div class="ep-step-top"><span class="ep-step-num">STEP 03</span><span class="ep-step-tool">Reoon</span></div><div class="ep-step-title">Verify every email</div><div class="ep-step-desc">Invalid, catch-all and risky addresses removed before a single send. Domain reputation protected. Typically 70–85% of the list survives. This step protects the entire system.</div></div>
+        <div class="ep-step hl-blue"><div class="ep-step-top"><span class="ep-step-num">STEP 04</span><span class="ep-step-tool">Instantly</span></div><div class="ep-step-title">3-step email sequence</div><div class="ep-step-desc">Day 1: pain-led, 3 sentences, personalised first line, ends with a question. Day 3: follow-up with one insight. Day 7: breakup email. Instantly handles domain warming and inbox rotation automatically.</div></div>
+        <div class="ep-step hl-blue"><div class="ep-step-top"><span class="ep-step-num">STEP 05</span><span class="ep-step-tool">Aimfox</span></div><div class="ep-step-title">LinkedIn 4-touch sequence</div><div class="ep-step-desc">Runs in parallel with email. Connect request → personalised DM → value follow-up → soft ask for a call. Seeing outreach on two channels simultaneously increases response rate significantly.</div></div>
+        <div class="ep-step hl-blue" style="border-top-color:#3b82f6"><div class="ep-step-top"><span class="ep-step-num">STEP 06</span><span class="ep-step-tool">Loom + Make.com</span></div><div class="ep-step-title">Loom on warm signal</div><div class="ep-step-desc">When a prospect shows intent (email open 3×, profile visit), Make.com triggers a 90-second personalised Loom showing their specific distribution gap. Converts at 3–5× plain text.</div></div>
+      </div>
+    </div>
+
+    <div class="engine-panel" id="panel-2">
+      <div class="ep-header"><div><h3>Workshop Funnel</h3><p>One master playbook — any CDP runs the full funnel</p></div><button class="ep-close" onclick="closeEngine(2)">Close ↑</button></div>
+      <div class="ep-steps">
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">STEP 01</span><span class="ep-step-tool">Typeform + Make.com</span></div><div class="ep-step-title">Registration page</div><div class="ep-step-desc">Template landing page. CDP swaps date and vertical. Every submission auto-routed to Make.com. Clay enrichment runs on each registrant. High-score attendees get a personal pre-workshop message from the CDP.</div></div>
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">STEP 02</span><span class="ep-step-tool">Instantly</span></div><div class="ep-step-title">Pre-workshop nurture</div><div class="ep-step-desc">3 emails over 5 days. Email 1: welcome + "what's your biggest challenge?" Email 2: relevant insight or stat. Email 3: day-before reminder, "bring your current setup — we'll map it live."</div></div>
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">STEP 03</span><span class="ep-step-tool">CDP delivers</span></div><div class="ep-step-title">Live workshop — distribution audit</div><div class="ep-step-desc">60 minutes. CDP maps 2–3 attendee distribution setups live. Attendees see their own gap with numbers attached. The sale is half-closed before the offer is even made. Script and audit worksheet pre-built.</div></div>
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">STEP 04</span><span class="ep-step-tool">Instantly</span></div><div class="ep-step-title">48-hour offer sequence</div><div class="ep-step-desc">Email 1 (1hr after): soft offer — "we're taking 3 clients this month." Email 2 (24hrs): full offer + Calendly link. Email 3 (48hrs): deadline. Workshop attendees close at 3–5× cold outbound.</div></div>
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">SCALE</span><span class="ep-step-tool">System</span></div><div class="ep-step-title">CDP operability</div><div class="ep-step-desc">4 CDPs running 1 workshop each per month = 4 independent funnels simultaneously. Revenue compounds across the system without central management. Reusable across every vertical.</div></div>
+        <div class="ep-step hl-green"><div class="ep-step-top"><span class="ep-step-num">OUTPUT</span><span class="ep-step-tool">Calendly</span></div><div class="ep-step-title">Strategy call booked</div><div class="ep-step-desc">Interested attendees book directly via the Calendly link in Email 2 or 3. Booking triggers the full conversion system — pre-call brief generated, deal record created in Notion, CDP notified.</div></div>
+      </div>
+    </div>
+
+    <div class="engine-panel" id="panel-3">
+      <div class="ep-header"><div><h3>Lead Capture & Routing</h3><p>Every source → one pipeline → under 30 seconds</p></div><button class="ep-close" onclick="closeEngine(3)">Close ↑</button></div>
+      <div class="ep-steps">
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">STEP 01</span><span class="ep-step-tool">Make.com</span></div><div class="ep-step-title">All sources connected</div><div class="ep-step-desc">Workshop registrations, website forms, LinkedIn replies, email replies, ad lead forms (Google, Meta, LinkedIn) — all fire to Make.com via webhook the moment a lead submits or replies. Zero delay.</div></div>
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">STEP 02</span><span class="ep-step-tool">Clay</span></div><div class="ep-step-title">Enrich in real time</div><div class="ep-step-desc">Company type, platform size, role seniority, recent launches — enriched per lead in under 5 seconds. A creator with 500k subscribers needs a different conversation than a brand with no creator relationships.</div></div>
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">STEP 03</span><span class="ep-step-tool">Reoon</span></div><div class="ep-step-title">Verify instantly</div><div class="ep-step-desc">Under 3 seconds. Valid → continue. Invalid → discard. CDPs never waste time on leads that can't be contacted. The full capture → enrich → verify → route cycle completes in under 30 seconds.</div></div>
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">STEP 04</span><span class="ep-step-tool">Make.com logic</span></div><div class="ep-step-title">Score 1–10</div><div class="ep-step-desc">Company type match (+3), role seniority: C-suite/VP/Head (+3), platform size: 100k+ or $50k+ ad spend (+2), growth signal: hire/funding/launch (+2). Score determines urgency and routing destination.</div></div>
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">STEP 05</span><span class="ep-step-tool">Slack + Notion</span></div><div class="ep-step-title">Route to CDP with context</div><div class="ep-step-desc">CDP receives Slack notification: lead name, company, role, ICP score, enrichment summary, suggested opening angle, Calendly link. Zero research required. CDP responds in minutes, not hours.</div></div>
+        <div class="ep-step hl-purple"><div class="ep-step-top"><span class="ep-step-num">LIVE</span><span class="ep-step-tool">Notion</span></div><div class="ep-step-title">Pipeline — shared live view</div><div class="ep-step-desc">Every lead tracked from first touch. Source, stage, score, CDP assigned, last activity date. Stale for 5 days = auto-flagged and re-engagement triggered. All attribution tracked from day one.</div></div>
+      </div>
+    </div>
+
+    <div class="engine-panel" id="panel-4">
+      <div class="ep-header"><div><h3>Conversion System</h3><p>From first reply to closed deal — nothing manual</p></div><button class="ep-close" onclick="closeEngine(4)">Close ↑</button></div>
+      <div class="ep-steps">
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">STEP 01</span><span class="ep-step-tool">Instantly + Make.com</span></div><div class="ep-step-title">Calendly sent in &lt;60 seconds</div><div class="ep-step-desc">Positive reply detected by Instantly. Make.com fires. Calendly link auto-sent. A prospect who replies is in a window of intent — 2–4 hours. This system closes that window automatically every time.</div></div>
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">STEP 02</span><span class="ep-step-tool">Make.com</span></div><div class="ep-step-title">Pre-call brief sent 1hr before</div><div class="ep-step-desc">Prospect name, company, role, ICP score, pain signals, source, suggested opening question — all auto-generated and sent to CDP in Slack 1 hour before the call. CDP reads it in 3 minutes. Shows up prepared.</div></div>
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">STEP 03</span><span class="ep-step-tool">Fathom</span></div><div class="ep-step-title">Call recorded + transcribed</div><div class="ep-step-desc">Fathom auto-joins every Calendly call. Transcript ready 60 seconds after the call ends. Sent to Make.com via webhook. Pain level, interest level, objection, timeline, next step — all extracted automatically.</div></div>
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">STEP 04</span><span class="ep-step-tool">Make.com + Instantly</span></div><div class="ep-step-title">Follow-up in 2 minutes</div><div class="ep-step-desc">Written from the transcript. References what was discussed, the pain, the agreed next step. Appears in CDP Slack for one-click approval. Sent within 2 minutes of call end — 40% higher conversion than next-day sends.</div></div>
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">STEP 05</span><span class="ep-step-tool">Make.com + Notion</span></div><div class="ep-step-title">Stale detection — daily 8am</div><div class="ep-step-desc">Every open deal checked. No activity in 5 days = re-engagement message written (soft nudge, trigger-based, or social proof) and sent to CDP for one-click approval. No deal goes quiet by accident.</div></div>
+        <div class="ep-step hl-amber"><div class="ep-step-top"><span class="ep-step-num">WIN</span><span class="ep-step-tool">System</span></div><div class="ep-step-title">Closed → system continues</div><div class="ep-step-desc">Deal Won: onboarding checklist auto-created. Deal Lost: archived, 90-day recheck set, Clay monitors for trigger events. A job change, funding round, or new launch fires a fresh re-engagement. No deal truly dies.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools-section" id="tools">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">The Stack</div>
+      <h2>Every Tool. One Connected System.</h2>
+      <p>Not separate tools — a single pipeline from first touch to closed deal.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🎯</div><div class="tool-name">Apollo.io</div><div class="tool-role">List building + ICP targeting</div></div>
+      <div class="tool-card"><div class="tool-icon">🔍</div><div class="tool-name">Clay</div><div class="tool-role">Enrichment + buying signals</div></div>
+      <div class="tool-card"><div class="tool-icon">✅</div><div class="tool-name">Reoon</div><div class="tool-role">Email verification</div></div>
+      <div class="tool-card"><div class="tool-icon">📧</div><div class="tool-name">Instantly</div><div class="tool-role">Cold email sequences</div></div>
+      <div class="tool-card"><div class="tool-icon">💼</div><div class="tool-name">Aimfox</div><div class="tool-role">LinkedIn DM sequences</div></div>
+      <div class="tool-card"><div class="tool-icon">🎥</div><div class="tool-name">Loom</div><div class="tool-role">Personalised video</div></div>
+      <div class="tool-card"><div class="tool-icon">⚙️</div><div class="tool-name">Make.com</div><div class="tool-role">Automation backbone</div></div>
+      <div class="tool-card"><div class="tool-icon">📅</div><div class="tool-name">Calendly</div><div class="tool-role">Meeting booking + trigger</div></div>
+      <div class="tool-card"><div class="tool-icon">🎙️</div><div class="tool-name">Fathom</div><div class="tool-role">Call recording + transcript</div></div>
+      <div class="tool-card"><div class="tool-icon">📋</div><div class="tool-name">Notion</div><div class="tool-role">Live deal pipeline</div></div>
+      <div class="tool-card"><div class="tool-icon">📊</div><div class="tool-name">Looker Studio</div><div class="tool-role">Acquisition reporting</div></div>
+      <div class="tool-card"><div class="tool-icon">📄</div><div class="tool-name">Typeform</div><div class="tool-role">Workshop registrations</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="principles-section" id="principles">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">How We Build</div>
+      <h2>The Principles Behind the System.</h2>
+    </div>
+    <div class="principles-grid">
+      <div class="pc"><div class="pc-icon">🔁</div><div><h4>If it can't be run by someone else, it's not complete</h4><p>Every system is documented, templated and handed off. CDPs operate it — not manage it.</p></div></div>
+      <div class="pc"><div class="pc-icon">⚡</div><div><h4>Outbound starts day one — no waiting</h4><p>Cold email and LinkedIn sequences launch immediately. Meetings land while the full system is being built.</p></div></div>
+      <div class="pc"><div class="pc-icon">📐</div><div><h4>Systems not tasks. Bottlenecks not symptoms.</h4><p>We fix where pipeline breaks — bad data, generic messaging, the follow-up gap — at the system level.</p></div></div>
+      <div class="pc"><div class="pc-icon">📈</div><div><h4>Revenue compounds through systems</h4><p>Every closed client, campaign and re-engagement runs the same way. Scales without central management.</p></div></div>
+      <div class="pc"><div class="pc-icon">🎯</div><div><h4>Attribution tracked from day one</h4><p>Every lead tagged with source. Know exactly which channel generates the best clients and double down.</p></div></div>
+      <div class="pc"><div class="pc-icon">🔄</div><div><h4>No deal ever truly dies</h4><p>Lost deals archived with 90-day recheck. Clay monitors for trigger events. A new signal = a new angle.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2>Ready to build the machine?</h2>
+    <p>This system is ready to deploy for creatorXchange in 7 days. Outbound starts on day one.</p>
+    <a class="cta-btn" href="https://calendly.com" target="_blank">📅 Book a strategy call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Ascendly</div>
+  <div class="footer-copy">Built for creatorXchange — ascendly.one</div>
+</footer>
+
+<!-- DRAWER DATA -->
+<script>
+const drawers = {
+  'd-list':{c1:{t:'Target list',b:'300–500 qualified prospects per batch. Filtered by creator type, brand category, label size or agency type using Apollo.io\'s ICP filters.'},c2:{t:'Signal layer',b:'Recent hiring in marketing or partnerships, content volume growth, new signings, campaign launches — all pulled automatically.'},c3:{t:'Output',b:'Clean ICP-matched CSV ready for enrichment. Every prospect fits the profile before enrichment even starts.'}},
+  'd-enrich':{c1:{t:'What Clay pulls',b:'LinkedIn profile URL, job title, company size, funding round, recent posts, job changes in last 90 days, content output frequency, tech stack.'},c2:{t:'Buying signals',b:'Creator who just signed a brand deal = buying mode. Label that just hired Head of Digital = scaling. Brand with underperforming ads = in pain.'},c3:{t:'Personalisation variable',b:'Each contact gets a specific signal — recent post, milestone, launch — that becomes the first line of the outreach message.'}},
+  'd-verify':{c1:{t:'Why this exists',b:'Sending to unverified emails destroys domain reputation. A domain that hits spam folders is a dead outbound channel — impossible to recover quickly.'},c2:{t:'What gets removed',b:'Invalid (bounces), catch-all (risky), disposable (fake inboxes), role-based (info@, support@ — never a decision maker).'},c3:{t:'Output',b:'Valid personal emails only. Typically 70–85% of the original list survives. Domain stays clean and deliverable.'}},
+  'd-email':{c1:{t:'Email 1 — Day 1',b:'Pain-led, 3 sentences max. Personalised first line from Clay signal (recent campaign, launch, hire). Ends with one specific question — not a demo request.'},c2:{t:'Email 2 — Day 3',b:'References Email 1. Adds one concrete insight or stat. Introduces the distribution system angle.'},c3:{t:'Email 3 — Day 7',b:'The breakup email. Low pressure. Acknowledges they\'re busy, leaves the door open. Converts fence-sitters who were close but not ready.'}},
+  'd-linkedin':{c1:{t:'Why LinkedIn + email together',b:'Decision makers at creator companies are active on LinkedIn. Two channels simultaneously increases response rate significantly.'},c2:{t:'Sequence structure',b:'Day 1: connection request with personalised note. Day 2: pain-led DM (2 sentences). Day 5: value follow-up. Day 10: soft ask for 15-min call.'},c3:{t:'Aimfox integration',b:'Sequences managed and rate-limited safely. Integrates directly with Instantly — both sequences run from the same contact list with no duplication.'}},
+  'd-loom':{c1:{t:'What triggers a Loom send',b:'Email opened 3+ times without reply, LinkedIn profile visit after connection, or new buying signal detected by Clay. Make.com detects and fires automatically.'},c2:{t:'What the Loom shows',b:'Opens on their website or LinkedIn — immediately personal. Shows their current distribution gap. Then shows what creatorXchange infrastructure looks like running for their type of client.'},c3:{t:'Why it converts 3–5×',b:'Visual. Specific to them. 90 seconds to watch. The prospect feels seen — not spammed. They understand the value before getting on a call.'}},
+  'd-reply':{c1:{t:'Positive reply detected',b:'Instantly keyword filters detect "yes", "interested", "tell me more", "when can we talk". Make.com webhook fires within seconds.'},c2:{t:'Calendly auto-sent',b:'Calendly link sent automatically within 60 seconds of the reply. The prospect is in a window of intent — this system closes that window every time.'},c3:{t:'CDP notified',b:'Slack message to CDP: prospect name, company, what they said, ICP score, Notion deal link. CDP is informed and the deal is already tracked.'}},
+  'd-ws-page':{c1:{t:'Template structure',b:'CDP changes the date, vertical (creators/brands/labels), and host name. Everything else is pre-built and reusable across every workshop.'},c2:{t:'Form captures',b:'Name, email, company, role, current monthly distribution spend (qualifying question). Make.com routes every submission automatically.'},c3:{t:'On registration',b:'Confirmation email sent immediately. Clay enrichment runs on their email. ICP score assigned. High-score registrants get a personal message from the CDP.'}},
+  'd-ws-nurture':{c1:{t:'Email 1 — Day 1',b:'Welcome + what to expect. One question: "What\'s your biggest distribution challenge right now?" Replies go to the CDP — personal connection before the event.'},c2:{t:'Email 2 — Day 3',b:'Specific insight relevant to their challenge. Stat, short story or case example. Keeps engagement high and positions the workshop as high value.'},c3:{t:'Email 3 — Day before',b:'Reminder + agenda. "Bring your current distribution setup — we\'ll map it live." Creates active participation mindset.'}},
+  'd-ws-live':{c1:{t:'Structure (60 min)',b:'10 min — the distribution economy and why current methods don\'t scale. 20 min — live audit of 2–3 attendee setups. 20 min — what the creatorXchange system looks like running. 10 min — Q&A and offer.'},c2:{t:'The audit is the conversion mechanism',b:'When an attendee sees their own gap mapped with numbers attached, they\'re not being sold to — they\'re seeing their problem clearly for the first time.'},c3:{t:'CDP preparation',b:'Script, slide deck and audit worksheet are all pre-built. CDP fills in the attendee-specific blanks. No improvisation required.'}},
+  'd-ws-offer':{c1:{t:'Email 1 — 1hr after workshop',b:'Thank you + recording. Restates the one outcome. Soft offer: "We\'re taking 3 clients this month."'},c2:{t:'Email 2 — 24hrs',b:'Full offer. What they get, how it works, what the engagement looks like. Calendly link for a 30-min strategy call.'},c3:{t:'Email 3 — 48hrs deadline',b:'"This closes tonight." Short, direct. Creates urgency without pressure. Workshop attendees close at 3–5× higher than cold outbound.'}},
+  'd-sources':{c1:{t:'Sources connected',b:'Workshop registrations, website contact forms, LinkedIn DM replies, cold email replies, referral submissions, Google Ads lead forms, Meta lead ads.'},c2:{t:'How it connects',b:'Every source has a webhook that fires to Make.com the moment a lead submits or replies. Zero delay. Zero manual handling.'},c3:{t:'Why speed matters',b:'A lead who submits a form and hears nothing for 4 hours is already gone. This system responds in seconds — automatically.'}},
+  'd-score':{c1:{t:'Scoring variables',b:'Company type match (+3), role seniority: C-suite/VP/Head of (+3), platform size: 100k+ followers or $50k+ ad spend (+2), growth signal: hiring/funding/launch (+2).'},c2:{t:'Score bands',b:'8–10 = high priority, immediate Slack notification to senior CDP. 5–7 = standard sequence. 1–4 = hold list for quarterly review.'},c3:{t:'Why scoring matters',b:'Without scoring, CDPs spend time on bad-fit leads and miss the high-value ones. The score ensures highest-value leads get most attention fastest.'}},
+  'd-route':{c1:{t:'Routing logic',b:'Score 8–10, creator vertical → CDP 1 (creator specialist). Score 8–10, brand vertical → CDP 2. Score 5–7 → standard sequence. Score below 5 → hold.'},c2:{t:'CDP receives in Slack',b:'Lead name, company, role, ICP score, enrichment summary, suggested opening angle, and Calendly link to send. Zero research required.'},c3:{t:'The opening angle is written automatically',b:'"Lead just relaunched their merch line — open with distribution angle for physical products." CDP sends it, it feels personal, it converts.'}},
+  'd-pipeline':{c1:{t:'What the pipeline shows',b:'Lead name, company, vertical, ICP score, source channel, current stage, last activity date, assigned CDP, follow-up status.'},c2:{t:'Stale detection',b:'Make.com checks every open lead daily. No activity in 5 days → lead auto-flagged Stale → CDP notified → re-engagement triggered.'},c3:{t:'Attribution',b:'Every lead tagged with source from day one. At end of every month, you know exactly which channel generates the best leads. Double down on what works.'}},
+  'd-book':{c1:{t:'How it works',b:'Instantly keyword filters detect positive replies. Make.com fires a webhook. Calendly link sent within 60 seconds. No CDP action required.'},c2:{t:'Why 60 seconds matters',b:'The window of intent after a positive reply is 2–4 hours. If they don\'t get a booking link in that window, they move on. This closes the window automatically.'},c3:{t:'CDP notification',b:'Immediately, CDP gets a Slack message: prospect name, company, what they said in the reply, ICP score, and a link to the Notion deal record.'}},
+  'd-brief':{c1:{t:'Brief contents',b:'Prospect name and role, company overview, ICP score and what drove it, pain signals from enrichment, source, suggested opening question.'},c2:{t:'When it\'s sent',b:'1 hour before the scheduled call. Triggered automatically by Calendly booking. CDP receives it in Slack with a link to the full Notion deal record.'},c3:{t:'CDP operability',b:'CDP doesn\'t research the prospect. They open the brief, read it in 3 minutes, and show up prepared. The system does the prep work.'}},
+  'd-record':{c1:{t:'How Fathom works',b:'Auto-joins every Calendly-scheduled call (Zoom, Google Meet, Teams). Records and transcribes in real time. Sends full transcript via webhook to Make.com 60 seconds after call ends.'},c2:{t:'What\'s extracted',b:'Pain level (1–10), interest level (Hot/Warm/Cold), primary objection, decision timeline, agreed next step, internal champion name, budget signal.'},c3:{t:'Where it goes',b:'All extracted fields automatically written to the Notion deal record. CDP doesn\'t update anything manually. Done before they close their laptop.'}},
+  'd-followup':{c1:{t:'How it\'s written',b:'Make.com sends transcript to a pre-built prompt. Output: a personalised 100-word follow-up referencing the pain discussed, the agreed next step, and one specific thing the prospect said.'},c2:{t:'Approval flow',b:'Draft appears in CDP Slack with "Send" or "Edit first" buttons. One click sends via Instantly from the CDP\'s email domain.'},c3:{t:'Why 2 minutes matters',b:'A follow-up sent within 5 minutes of a call converts at 40% higher than one sent the next day. The prospect is still in the conversation mentally.'}},
+  'd-stale':{c1:{t:'How detection works',b:'Make.com scheduled check every morning at 8am. Queries all open deals in Notion. Any deal with no activity for 5+ days gets flagged Stale.'},c2:{t:'Re-engagement types',b:'Soft nudge ("checking in"), trigger-based ("saw you just launched / hired"), social proof ("quick result from a similar creator/brand"). Three rotating message types.'},c3:{t:'CDP action',b:'One-click approval in Slack. The message is already written, the send is ready. That\'s it. No deal goes quiet by accident.'}},
+  'd-close':{c1:{t:'Deal won',b:'Stage set to Won in Notion. Onboarding checklist auto-created. CDP assigned. Distribution campaign infrastructure built and handed off to client.'},c2:{t:'Deal lost',b:'Stage set to Lost. Archived — not deleted. 90-day re-engagement date auto-set. Clay continues monitoring for trigger events.'},c3:{t:'Trigger re-engagement',b:'Job change, new campaign, funding round, hiring spike — when a trigger fires, a fresh re-engagement message is written automatically. No deal truly dies in this system.'}}
+};
+
+let activeDrawer = null;
+let activeEngine = null;
+
+function showDrawer(id) {
+  const data = drawers[id];
+  if (!data) return;
+  if (activeDrawer === id) { closeDrawer(); return; }
+  document.querySelectorAll('.pbox').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('drawer-col-1').innerHTML = `<div class="drawer-col-title">${data.c1.t}</div><div class="drawer-item-body" style="font-size:13px;color:var(--ink-2);line-height:1.65">${data.c1.b}</div>`;
+  document.getElementById('drawer-col-2').innerHTML = `<div class="drawer-col-title">${data.c2.t}</div><div class="drawer-item-body" style="font-size:13px;color:var(--ink-2);line-height:1.65">${data.c2.b}</div>`;
+  document.getElementById('drawer-col-3').innerHTML = `<div class="drawer-col-title">${data.c3.t}</div><div class="drawer-item-body" style="font-size:13px;color:var(--ink-2);line-height:1.65">${data.c3.b}</div>`;
+  document.getElementById('drawer').classList.add('open');
+  activeDrawer = id;
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.querySelectorAll('.pbox').forEach(b => b.classList.remove('active'));
+  activeDrawer = null;
+}
+
+function openEngine(n) {
+  if (activeEngine === n) { closeEngine(n); return; }
+  if (activeEngine) { document.getElementById('panel-'+activeEngine).classList.remove('open'); document.getElementById('tab-'+activeEngine).classList.remove('active'); }
+  document.getElementById('panel-'+n).classList.add('open');
+  document.getElementById('tab-'+n).classList.add('active');
+  activeEngine = n;
+  setTimeout(() => document.getElementById('panel-'+n).scrollIntoView({behavior:'smooth',block:'nearest'}), 50);
+}
+
+function closeEngine(n) {
+  document.getElementById('panel-'+n).classList.remove('open');
+  document.getElementById('tab-'+n).classList.remove('active');
+  activeEngine = null;
+}
+</script>
+</body>
+</html>
