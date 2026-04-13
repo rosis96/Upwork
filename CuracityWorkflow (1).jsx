@@ -1,0 +1,868 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  Globe,
+  FileText,
+  Download,
+  Database,
+  ShieldCheck,
+  Target,
+  Linkedin,
+  Mail,
+  Pause,
+  ArrowRight,
+  Zap,
+  ChevronRight,
+  Sparkles,
+  BarChart3,
+  Users,
+  Building2,
+  Ship,
+  MapPin,
+  TrendingUp,
+  Eye,
+  Phone,
+  Calendar,
+  Bot,
+  MessageSquare,
+  RotateCcw,
+  Bell,
+  Activity,
+  X,
+  Plus,
+  Upload,
+  Image,
+  Shield,
+  Clock,
+  CheckCircle2,
+  Crosshair,
+} from "lucide-react";
+
+/* ───────── animation helper (unchanged) ───────── */
+function FadeIn({ children, delay = 0, className = "" }) {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.7s cubic-bezier(.16,1,.3,1) ${delay}s, transform 0.7s cubic-bezier(.16,1,.3,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   MODULE 1 — TAM & ICP Control Panel
+   ═══════════════════════════════════════════════════ */
+function TAMControlPanel() {
+  const defaultTags = [
+    "Luxury hotels",
+    "Boutique chains",
+    "Cruise lines",
+    "DMOs",
+    "Hotel management cos",
+    "Resort destinations",
+  ];
+  const [tags, setTags] = useState(defaultTags);
+  const [input, setInput] = useState("");
+  const [counter, setCounter] = useState(14282);
+
+  const addTag = () => {
+    const val = input.trim();
+    if (val && !tags.includes(val)) {
+      setTags([...tags, val]);
+      setInput("");
+    }
+  };
+  const removeTag = (t) => setTags(tags.filter((x) => x !== t));
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCounter((c) => c + Math.floor(Math.random() * 3) + 1);
+    }, 2400);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <FadeIn delay={0.05}>
+      <div className="mb-10">
+        <div className="flex items-center gap-2 mb-4">
+          <Crosshair className="w-4 h-4 text-teal-500" />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+            TAM & ICP control panel
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* Left: editable industry tags — 3 cols */}
+          <div className="md:col-span-3 bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-[13px] font-bold text-slate-900 tracking-tight">Target industries</h3>
+              <span className="text-[10px] text-slate-400 font-medium">{tags.length} active</span>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {tags.map((t) => (
+                <span
+                  key={t}
+                  className="group/tag inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-full bg-teal-50/80 text-teal-700 border border-teal-200/50 hover:border-teal-300 transition-colors"
+                >
+                  {t}
+                  <button
+                    onClick={() => removeTag(t)}
+                    className="opacity-0 group-hover/tag:opacity-100 transition-opacity w-3.5 h-3.5 rounded-full bg-teal-200/60 hover:bg-teal-300 flex items-center justify-center"
+                  >
+                    <X className="w-2.5 h-2.5 text-teal-800" />
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addTag()}
+                placeholder="Add industry…"
+                className="flex-1 text-[12px] px-3 py-2 rounded-xl bg-white/80 border border-slate-200/60 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-teal-300 focus:ring-1 focus:ring-teal-200 transition-all"
+              />
+              <button
+                onClick={addTag}
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors"
+              >
+                <Plus className="w-3 h-3" />
+                Add
+              </button>
+            </div>
+          </div>
+
+          {/* Right: live prospect counter — 2 cols */}
+          <div className="md:col-span-2 relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1),0_8px_24px_rgba(0,0,0,0.15)]">
+            {/* glow orbs */}
+            <div className="absolute top-[-30%] right-[-20%] w-48 h-48 rounded-full bg-teal-400/20 blur-3xl" />
+            <div className="absolute bottom-[-20%] left-[-10%] w-36 h-36 rounded-full bg-cyan-400/15 blur-2xl" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-400" />
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-teal-400/90">
+                  Live pipeline
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-400 mb-3">Verified prospects in target TAM</div>
+              <div
+                className="text-[42px] sm:text-[52px] font-black tracking-[-0.04em] leading-none"
+                style={{
+                  background: "linear-gradient(135deg, #5EEAD4 0%, #22D3EE 40%, #818CF8 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  filter: "drop-shadow(0 0 20px rgba(94,234,212,0.3))",
+                }}
+              >
+                {counter.toLocaleString()}
+              </div>
+              <div className="flex items-center gap-3 mt-3">
+                <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
+                  <TrendingUp className="w-3 h-3" />
+                  +12.4% this week
+                </div>
+                <div className="w-px h-3 bg-slate-700" />
+                <div className="text-[10px] text-slate-500">across {tags.length} industries</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </FadeIn>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   MODULE 2 — n8n-style curved connectors with pulse
+   ═══════════════════════════════════════════════════ */
+
+function PulseDot({ pathId, dur = "2.2s", delay = "0s" }) {
+  return (
+    <circle r="3.5" fill="#2DD4BF" opacity="0.9">
+      <animateMotion dur={dur} repeatCount="indefinite" begin={delay}>
+        <mpath href={`#${pathId}`} />
+      </animateMotion>
+    </circle>
+  );
+}
+
+function PulseGlow({ pathId, dur = "2.2s", delay = "0s" }) {
+  return (
+    <circle r="7" fill="#2DD4BF" opacity="0.2">
+      <animateMotion dur={dur} repeatCount="indefinite" begin={delay}>
+        <mpath href={`#${pathId}`} />
+      </animateMotion>
+    </circle>
+  );
+}
+
+let _uid = 0;
+function uid(prefix = "p") { return prefix + "_" + (++_uid); }
+
+function CurvedVLine({ height = 48 }) {
+  const [pathId] = useState(() => uid("cv"));
+  const mid = height / 2;
+  return (
+    <svg width="24" height={height} className="mx-auto block" style={{ overflow: "visible" }}>
+      <defs>
+        <marker id="mkD" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M1 1 L4 7 L7 1" fill="none" stroke="#94A3B8" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+        </marker>
+      </defs>
+      <path
+        id={pathId}
+        d={`M12 0 C12 ${mid * 0.6}, 12 ${mid * 1.4}, 12 ${height - 6}`}
+        fill="none"
+        stroke="#CBD5E1"
+        strokeWidth="1"
+        markerEnd="url(#mkD)"
+      />
+      <PulseGlow pathId={pathId} dur="1.8s" />
+      <PulseDot pathId={pathId} dur="1.8s" />
+    </svg>
+  );
+}
+
+function CurvedHLine({ width = 56 }) {
+  const [pathId] = useState(() => uid("ch"));
+  const cpx = width * 0.38;
+  return (
+    <svg width={width} height="24" className="flex-shrink-0 self-center" style={{ overflow: "visible" }}>
+      <defs>
+        <marker id="mkR" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M1 1 L7 4 L1 7" fill="none" stroke="#94A3B8" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+        </marker>
+      </defs>
+      <path
+        id={pathId}
+        d={`M0 12 C${cpx} 12, ${width - cpx} 12, ${width - 6} 12`}
+        fill="none"
+        stroke="#CBD5E1"
+        strokeWidth="1"
+        markerEnd="url(#mkR)"
+      />
+      <PulseGlow pathId={pathId} dur="1.6s" />
+      <PulseDot pathId={pathId} dur="1.6s" />
+    </svg>
+  );
+}
+
+function CurvedBranchLines() {
+  const [ids] = useState(() => ({ s: uid("bs"), l: uid("bl"), m: uid("bm"), r: uid("br") }));
+  return (
+    <svg width="100%" height="64" className="block" viewBox="0 0 800 64" preserveAspectRatio="xMidYMid meet" style={{ overflow: "visible" }}>
+      <defs>
+        <marker id="mkBD" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M1 1 L4 7 L7 1" fill="none" stroke="#94A3B8" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+        </marker>
+      </defs>
+      <path id={ids.s} d="M400 0 C400 8, 400 12, 400 20" fill="none" stroke="#CBD5E1" strokeWidth="1" />
+      <path id={ids.l} d="M400 20 C400 34, 134 34, 134 56" fill="none" stroke="#CBD5E1" strokeWidth="1" markerEnd="url(#mkBD)" />
+      <path id={ids.m} d="M400 20 C400 34, 400 40, 400 56" fill="none" stroke="#CBD5E1" strokeWidth="1" markerEnd="url(#mkBD)" />
+      <path id={ids.r} d="M400 20 C400 34, 666 34, 666 56" fill="none" stroke="#CBD5E1" strokeWidth="1" markerEnd="url(#mkBD)" />
+      <PulseGlow pathId={ids.l} dur="1.6s" delay="0s" />
+      <PulseDot pathId={ids.l} dur="1.6s" delay="0s" />
+      <PulseGlow pathId={ids.m} dur="1.4s" delay="0.3s" />
+      <PulseDot pathId={ids.m} dur="1.4s" delay="0.3s" />
+      <PulseGlow pathId={ids.r} dur="1.6s" delay="0.6s" />
+      <PulseDot pathId={ids.r} dur="1.6s" delay="0.6s" />
+    </svg>
+  );
+}
+
+function CurvedMergeLines() {
+  const [ids] = useState(() => ({ l: uid("ml"), m: uid("mm"), r: uid("mr"), s: uid("ms") }));
+  return (
+    <svg width="100%" height="64" className="block" viewBox="0 0 800 64" preserveAspectRatio="xMidYMid meet" style={{ overflow: "visible" }}>
+      <defs>
+        <marker id="mkMD" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M1 1 L4 7 L7 1" fill="none" stroke="#94A3B8" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+        </marker>
+      </defs>
+      <path id={ids.l} d="M134 0 C134 20, 400 20, 400 38" fill="none" stroke="#CBD5E1" strokeWidth="1" />
+      <path id={ids.m} d="M400 0 C400 14, 400 26, 400 38" fill="none" stroke="#CBD5E1" strokeWidth="1" />
+      <path id={ids.r} d="M666 0 C666 20, 400 20, 400 38" fill="none" stroke="#CBD5E1" strokeWidth="1" />
+      <path id={ids.s} d="M400 38 C400 44, 400 52, 400 58" fill="none" stroke="#CBD5E1" strokeWidth="1" markerEnd="url(#mkMD)" />
+      <PulseGlow pathId={ids.l} dur="1.6s" delay="0.2s" />
+      <PulseDot pathId={ids.l} dur="1.6s" delay="0.2s" />
+      <PulseGlow pathId={ids.m} dur="1.4s" delay="0s" />
+      <PulseDot pathId={ids.m} dur="1.4s" delay="0s" />
+      <PulseGlow pathId={ids.r} dur="1.6s" delay="0.4s" />
+      <PulseDot pathId={ids.r} dur="1.6s" delay="0.4s" />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   MODULE 3 — Evidence Vault
+   ═══════════════════════════════════════════════════ */
+function EvidenceVault() {
+  return (
+    <FadeIn delay={0.1}>
+      <div className="mt-16 -mx-4 sm:-mx-6">
+        <div className="rounded-3xl overflow-hidden" style={{ background: "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)" }}>
+          <div className="relative px-6 sm:px-10 py-12 sm:py-16 overflow-hidden">
+            <div className="absolute top-[-20%] right-[10%] w-72 h-72 rounded-full bg-teal-500/8 blur-3xl" />
+            <div className="absolute bottom-[-10%] left-[5%] w-56 h-56 rounded-full bg-indigo-500/8 blur-3xl" />
+
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+              {/* Left: text */}
+              <div>
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-teal-400 bg-teal-500/10 border border-teal-500/20 rounded-full px-3 py-1.5 mb-5">
+                  <Shield className="w-3 h-3" />
+                  Evidence vault
+                </div>
+                <h2 className="text-[clamp(22px,4vw,32px)] font-black text-white leading-[1.1] tracking-[-0.03em] mb-4">
+                  Performance
+                  <br />
+                  <span className="bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                    proof
+                  </span>
+                </h2>
+                <p className="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-sm">
+                  Real campaign screenshots, reply threads, and booked meetings. Every result is documented and verifiable — upload your live data to showcase pipeline impact.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    { icon: CheckCircle2, label: "Verified replies", value: "340+" },
+                    { icon: Calendar, label: "Meetings booked", value: "89" },
+                    { icon: Clock, label: "Avg response", value: "2.4 hrs" },
+                  ].map((s, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                        <s.icon className="w-3.5 h-3.5 text-teal-400" />
+                      </div>
+                      <div>
+                        <div className="text-[14px] font-bold text-white tracking-tight">{s.value}</div>
+                        <div className="text-[10px] text-slate-500">{s.label}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: browser mockup frame */}
+              <div className="relative">
+                <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 rounded-2xl overflow-hidden shadow-2xl shadow-black/30">
+                  {/* title bar */}
+                  <div className="flex items-center gap-2 px-4 py-3 bg-slate-800/90 border-b border-slate-700/50">
+                    <div className="flex gap-1.5">
+                      <div className="w-[10px] h-[10px] rounded-full bg-[#FF5F57]" />
+                      <div className="w-[10px] h-[10px] rounded-full bg-[#FFBD2E]" />
+                      <div className="w-[10px] h-[10px] rounded-full bg-[#28C840]" />
+                    </div>
+                    <div className="flex-1 mx-4">
+                      <div className="bg-slate-700/60 rounded-lg px-3 py-1 flex items-center gap-2 max-w-[260px] mx-auto">
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+                        <span className="text-[10px] text-slate-400 truncate">app.instantly.ai/campaign/curacity-vista</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* dashed upload zone */}
+                  <div className="p-5 sm:p-6">
+                    <div className="border-2 border-dashed border-slate-600/60 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center min-h-[200px] hover:border-teal-500/40 hover:bg-teal-500/[0.03] transition-all duration-500 cursor-pointer group/upload">
+                      <div className="w-14 h-14 rounded-2xl bg-slate-700/50 border border-slate-600/40 flex items-center justify-center mb-4 group-hover/upload:border-teal-500/30 group-hover/upload:bg-teal-500/10 transition-all duration-500">
+                        <Upload className="w-6 h-6 text-slate-500 group-hover/upload:text-teal-400 transition-colors duration-500" />
+                      </div>
+                      <p className="text-[13px] font-semibold text-slate-400 group-hover/upload:text-slate-300 transition-colors mb-1">
+                        Drop campaign screenshots here
+                      </p>
+                      <p className="text-[11px] text-slate-600">
+                        PNG, JPG up to 10MB — reply threads, dashboards, booked meetings
+                      </p>
+                      <div className="flex items-center gap-2 mt-4">
+                        <div className="inline-flex items-center gap-1.5 text-[10px] font-medium px-3 py-1.5 rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/40">
+                          <Image className="w-3 h-3" />
+                          Browse files
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* placeholder thumbnails */}
+                    <div className="flex gap-2 mt-4">
+                      {[1, 2, 3].map((n) => (
+                        <div key={n} className="flex-1 h-14 rounded-lg bg-slate-700/30 border border-slate-600/30 flex items-center justify-center">
+                          <div className="text-[9px] text-slate-600 font-medium">Screenshot {n}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </FadeIn>
+  );
+}
+
+/* ───────── glass node card (unchanged) ───────── */
+function NodeCard({ icon: Icon, title, subtitle, badge, badgeColor = "teal", accent, children, pulse, className = "" }) {
+  const badgeColors = {
+    teal: "bg-teal-50 text-teal-700 border-teal-200/60",
+    blue: "bg-sky-50 text-sky-700 border-sky-200/60",
+    purple: "bg-violet-50 text-violet-700 border-violet-200/60",
+    amber: "bg-amber-50 text-amber-700 border-amber-200/60",
+    rose: "bg-rose-50 text-rose-700 border-rose-200/60",
+    slate: "bg-slate-100 text-slate-600 border-slate-200/60",
+    green: "bg-emerald-50 text-emerald-700 border-emerald-200/60",
+    orange: "bg-orange-50 text-orange-700 border-orange-200/60",
+  };
+  const accentColors = {
+    teal: "from-teal-400 to-cyan-400",
+    blue: "from-blue-500 to-indigo-500",
+    purple: "from-violet-500 to-purple-500",
+    amber: "from-amber-400 to-orange-400",
+    rose: "from-rose-400 to-pink-500",
+    green: "from-emerald-400 to-teal-400",
+    navy: "from-slate-700 to-slate-900",
+  };
+
+  return (
+    <div className={`group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_1px_3px_rgba(0,0,0,0.06),0_12px_32px_rgba(0,0,0,0.06)] hover:border-slate-200/80 transition-all duration-500 ${className}`}>
+      {accent && (
+        <div className={`absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r ${accentColors[accent]} rounded-full opacity-60 group-hover:opacity-100 transition-opacity`} />
+      )}
+      <div className="flex items-start gap-3.5">
+        <div className={`relative flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${accentColors[accent || "navy"]} flex items-center justify-center shadow-sm`}>
+          <Icon className="w-[18px] h-[18px] text-white" strokeWidth={1.8} />
+          {pulse && (
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white shadow-sm">
+              <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-50" />
+            </span>
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">{title}</h3>
+          {subtitle && <p className="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">{subtitle}</p>}
+          {children}
+        </div>
+      </div>
+      {badge && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {(Array.isArray(badge) ? badge : [badge]).map((b, i) => (
+            <span key={i} className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${badgeColors[Array.isArray(badgeColor) ? badgeColor[i] : badgeColor]}`}>
+              {b}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────── section label (unchanged) ───────── */
+function SectionLabel({ label, step }) {
+  return (
+    <div className="flex items-center gap-2.5 mb-4">
+      <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-slate-900 text-white text-[10px] font-bold">{step}</div>
+      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">{label}</span>
+    </div>
+  );
+}
+
+/* ───────── processing hub (updated with curved connectors) ───────── */
+function ProcessingHub() {
+  const steps = [
+    { icon: Database, title: "Clay enrichment", desc: "Job title, company size, hotel count, revenue signals, tech stack", color: "from-teal-400 to-cyan-500" },
+    { icon: ShieldCheck, title: "Reoon verify", desc: "Real-time email validation, invalid leads discarded", color: "from-blue-500 to-indigo-500" },
+    { icon: Target, title: "ICP scoring", desc: "Company size + title + industry match + funding signals", color: "from-violet-500 to-purple-500" },
+  ];
+  return (
+    <div className="relative bg-white/50 backdrop-blur-lg border border-slate-200/50 rounded-3xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.03),0_16px_40px_rgba(0,0,0,0.04)]">
+      <div className="absolute top-0 left-8 right-8 h-[2px] rounded-full bg-gradient-to-r from-teal-400 via-blue-500 to-violet-500 opacity-50" />
+      <div className="flex items-center gap-2 mb-5">
+        <Zap className="w-4 h-4 text-amber-500" />
+        <span className="text-[13px] font-bold text-slate-900 tracking-tight">Enrichment & routing</span>
+        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200/60 ml-auto">Make.com</span>
+      </div>
+      <div className="flex items-center gap-0">
+        {steps.map((s, i) => (
+          <div key={i} className="flex items-center flex-1 min-w-0">
+            <div className="flex-1 bg-white/80 border border-slate-100 rounded-xl p-3.5 hover:border-slate-200 transition-colors">
+              <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${s.color} flex items-center justify-center mb-2`}>
+                <s.icon className="w-4 h-4 text-white" strokeWidth={1.8} />
+              </div>
+              <div className="text-[12px] font-semibold text-slate-800">{s.title}</div>
+              <div className="text-[10.5px] text-slate-500 mt-0.5 leading-relaxed">{s.desc}</div>
+            </div>
+            {i < steps.length - 1 && (
+              <div className="flex-shrink-0 px-1">
+                <CurvedHLine width={32} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ───────── tab system (unchanged) ───────── */
+const tabs = [
+  { id: "inbound", label: "Inbound pipeline", icon: TrendingUp },
+  { id: "outbound", label: "Outbound engine", icon: Mail },
+  { id: "ailoop", label: "AI follow-up loop", icon: Bot },
+  { id: "icp", label: "ICP & TAM", icon: Users },
+];
+
+/* ═══════════ MAIN COMPONENT ═══════════ */
+export default function CuracityWorkflow() {
+  const [activeTab, setActiveTab] = useState("inbound");
+
+  return (
+    <div className="relative min-h-screen overflow-hidden" style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}>
+      {/* ── BG mesh (unchanged) ── */}
+      <div className="fixed inset-0 -z-10" style={{ background: "linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 40%, #F0F9FF 70%, #F8FAFC 100%)" }}>
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, #A5F3FC 0%, transparent 70%)" }} />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, #C4B5FD 0%, transparent 70%)" }} />
+        <div className="absolute top-[30%] left-[40%] w-[500px] h-[500px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, #99F6E4 0%, transparent 70%)" }} />
+        <svg width="100%" height="100%" className="opacity-[0.35]">
+          <defs>
+            <pattern id="dotgrid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.6" fill="#94A3B8" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dotgrid)" />
+        </svg>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+        {/* ── Header (unchanged) ── */}
+        <FadeIn>
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-teal-600 bg-teal-50/80 backdrop-blur-sm border border-teal-200/40 rounded-full px-3.5 py-1.5 mb-5">
+              <Sparkles className="w-3 h-3" />
+              Ascendly × Curacity
+            </div>
+            <h1 className="text-[clamp(28px,5vw,44px)] font-black text-slate-900 leading-[1.05] tracking-[-0.035em] mb-3">
+              Revenue automation
+              <br />
+              <span className="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent">workflow</span>
+            </h1>
+            <p className="text-sm sm:text-[15px] text-slate-500 max-w-lg mx-auto leading-relaxed">
+              Full pipeline: inbound capture, outbound sequences, AI-powered follow-up, and deal intelligence — built for Curacity's hospitality sales motion.
+            </p>
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <button className="inline-flex items-center gap-2 bg-slate-900 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
+                View full pipeline
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm text-slate-700 text-[13px] font-semibold px-5 py-2.5 rounded-full border border-slate-200/60 hover:bg-white hover:border-slate-300 transition-all duration-300">
+                <BarChart3 className="w-3.5 h-3.5" />
+                Metrics
+              </button>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* ═══ MODULE 1: TAM Control Panel ═══ */}
+        <TAMControlPanel />
+
+        {/* ── Tab bar (unchanged) ── */}
+        <FadeIn delay={0.1}>
+          <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md border border-slate-200/40 rounded-2xl p-1.5 mb-8 max-w-xl mx-auto">
+            {tabs.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setActiveTab(t.id)}
+                className={`flex-1 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-semibold py-2.5 rounded-xl transition-all duration-300 ${
+                  activeTab === t.id
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-700 hover:bg-white/60"
+                }`}
+              >
+                <t.icon className="w-3.5 h-3.5 hidden sm:block" />
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* ═══════ INBOUND TAB ═══════ */}
+        {activeTab === "inbound" && (
+          <div>
+            <FadeIn delay={0.05}>
+              <SectionLabel step="1" label="Lead sources" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <NodeCard icon={Globe} title="Website visitors" subtitle="Anonymous hotel & cruise decision-makers visiting curacity.com identified by IP" badge="RB2B" badgeColor="teal" accent="teal" pulse />
+                <NodeCard icon={FileText} title="Demo requests" subtitle="VISTA demo form fills, pipeline audit requests from curacity.com" badge="Webhook" badgeColor="blue" accent="blue" />
+                <NodeCard icon={Download} title="Content downloads" subtitle="Skift research, Cornell study PDFs, blog subscribers, webinar signups" badge="Webhook" badgeColor="blue" accent="purple" />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}><div className="py-1"><CurvedMergeLines /></div></FadeIn>
+
+            <FadeIn delay={0.15}>
+              <SectionLabel step="2" label="Processing hub" />
+              <ProcessingHub />
+            </FadeIn>
+
+            <FadeIn delay={0.2}><div className="py-1"><CurvedBranchLines /></div></FadeIn>
+
+            <FadeIn delay={0.25}>
+              <SectionLabel step="3" label="Routing actions" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <NodeCard icon={Linkedin} title="LinkedIn DM" subtitle="VP Marketing, Revenue Directors at hotel chains — high-value, personal outreach" badge={["Score 8-10", "Aimfox"]} badgeColor={["green", "teal"]} accent="green">
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <div className="w-full bg-emerald-100 rounded-full h-1.5"><div className="bg-gradient-to-r from-emerald-400 to-teal-400 h-1.5 rounded-full" style={{ width: "85%" }} /></div>
+                    <span className="text-[10px] text-emerald-600 font-medium whitespace-nowrap">Hot</span>
+                  </div>
+                </NodeCard>
+                <NodeCard icon={Mail} title="Cold email" subtitle="Marketing managers, commercial strategy leads — AI-personalized sequences" badge={["Score 5-7", "Instantly"]} badgeColor={["blue", "blue"]} accent="blue">
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <div className="w-full bg-blue-100 rounded-full h-1.5"><div className="bg-gradient-to-r from-blue-400 to-indigo-400 h-1.5 rounded-full" style={{ width: "60%" }} /></div>
+                    <span className="text-[10px] text-blue-600 font-medium whitespace-nowrap">Warm</span>
+                  </div>
+                </NodeCard>
+                <NodeCard icon={Pause} title="Hold list" subtitle="Nurture sequence, quarterly re-check, low-intent signals re-monitored" badge={["Score 1-4", "Nurture"]} badgeColor={["slate", "amber"]} accent="amber">
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <div className="w-full bg-amber-100 rounded-full h-1.5"><div className="bg-gradient-to-r from-amber-300 to-orange-300 h-1.5 rounded-full" style={{ width: "30%" }} /></div>
+                    <span className="text-[10px] text-amber-600 font-medium whitespace-nowrap">Cool</span>
+                  </div>
+                </NodeCard>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.3}>
+              <div className="mt-4"><CurvedVLine height={40} /></div>
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 text-white text-[13px] font-semibold px-6 py-3 rounded-2xl shadow-lg shadow-slate-900/10">
+                  <Calendar className="w-4 h-4" />
+                  Meeting booked via Calendly
+                  <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        )}
+
+        {/* ═══════ OUTBOUND TAB ═══════ */}
+        {activeTab === "outbound" && (
+          <div>
+            <FadeIn delay={0.05}>
+              <SectionLabel step="1" label="Prospect list build" />
+              <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                <NodeCard icon={Users} title="Apollo.io filters" subtitle="Hospitality, hotel management, travel tech, luxury/lifestyle brands" badge="Apollo.io" badgeColor="purple" accent="purple" className="flex-1" />
+                <div className="hidden sm:flex items-center"><CurvedHLine width={44} /></div>
+                <div className="sm:hidden flex justify-center"><CurvedVLine height={32} /></div>
+                <NodeCard icon={Target} title="Title targeting" subtitle="VP Marketing, CMO, Revenue Director, GM, Head of Partnerships, Commercial Strategy" badge="Decision-makers" badgeColor="blue" accent="blue" className="flex-1" />
+                <div className="hidden sm:flex items-center"><CurvedHLine width={44} /></div>
+                <div className="sm:hidden flex justify-center"><CurvedVLine height={32} /></div>
+                <NodeCard icon={ShieldCheck} title="Reoon verify" subtitle="Batch clean before every send — removes invalid, catch-all, disposable. 70-85% survives." badge="Reoon" badgeColor="green" accent="green" className="flex-1" />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div className="py-3"><CurvedVLine height={40} /></div>
+              <SectionLabel step="2" label="AI personalization" />
+              <div className="relative bg-white/50 backdrop-blur-lg border border-slate-200/50 rounded-3xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.03),0_16px_40px_rgba(0,0,0,0.04)]">
+                <div className="absolute top-0 left-8 right-8 h-[2px] rounded-full bg-gradient-to-r from-violet-400 to-fuchsia-400 opacity-50" />
+                <div className="flex items-center gap-2 mb-3">
+                  <Bot className="w-4 h-4 text-violet-500" />
+                  <span className="text-[13px] font-bold text-slate-900 tracking-tight">Claude API via Make.com</span>
+                </div>
+                <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                  Clay signal → Make.com → Claude API → personalized first line per contact → pushed to Instantly or Aimfox.
+                  References recent LinkedIn posts, funding news, new hires, job changes, company milestones.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <div className="py-1"><CurvedBranchLines /></div>
+              <SectionLabel step="3" label="Parallel sequences" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-white/50 backdrop-blur-lg border border-slate-200/50 rounded-3xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center"><Mail className="w-4 h-4 text-white" /></div>
+                    <div><div className="text-[12px] font-bold text-slate-900">Cold email sequence</div><div className="text-[10px] text-slate-400">Instantly.ai</div></div>
+                  </div>
+                  {[
+                    { day: "Day 1", title: "Pain-led opener", desc: "3 sentences, AI-personalized, ends with question" },
+                    { day: "Day 3", title: "Insight follow-up", desc: "VISTA's $1.5B stat or AI search data point" },
+                    { day: "Day 7", title: "Breakup email", desc: "Low pressure, door left open" },
+                  ].map((s, i) => (
+                    <div key={i}>
+                      <div className="flex items-start gap-3 py-2">
+                        <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mt-0.5 whitespace-nowrap">{s.day}</span>
+                        <div><div className="text-[11.5px] font-semibold text-slate-800">{s.title}</div><div className="text-[10.5px] text-slate-500">{s.desc}</div></div>
+                      </div>
+                      {i < 2 && <div className="ml-5 border-l border-dashed border-slate-200 h-2" />}
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-white/50 backdrop-blur-lg border border-slate-200/50 rounded-3xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center"><Linkedin className="w-4 h-4 text-white" /></div>
+                    <div><div className="text-[12px] font-bold text-slate-900">LinkedIn DM sequence</div><div className="text-[10px] text-slate-400">Aimfox</div></div>
+                  </div>
+                  {[
+                    { day: "Day 1", title: "Connection request", desc: "Short note from Clay signal" },
+                    { day: "Day 2", title: "First DM", desc: "Pain-led, 2 sentences on AI visibility gap" },
+                    { day: "Day 5", title: "Value follow-up", desc: "Curacity case study — 30x ROI stat" },
+                    { day: "Day 10", title: "Soft ask", desc: "15-min call on upper-funnel strategy" },
+                  ].map((s, i) => (
+                    <div key={i}>
+                      <div className="flex items-start gap-3 py-2">
+                        <span className="text-[10px] font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-md mt-0.5 whitespace-nowrap">{s.day}</span>
+                        <div><div className="text-[11.5px] font-semibold text-slate-800">{s.title}</div><div className="text-[10.5px] text-slate-500">{s.desc}</div></div>
+                      </div>
+                      {i < 3 && <div className="ml-5 border-l border-dashed border-slate-200 h-2" />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="mt-4"><CurvedMergeLines /></div>
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 text-white text-[13px] font-semibold px-6 py-3 rounded-2xl shadow-lg shadow-slate-900/10">
+                  <Calendar className="w-4 h-4" />
+                  Meeting booked via Calendly
+                  <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        )}
+
+        {/* ═══════ AI LOOP TAB ═══════ */}
+        {activeTab === "ailoop" && (
+          <div>
+            <FadeIn delay={0.05}>
+              <SectionLabel step="1" label="Post-call automation" />
+              {[
+                { icon: Phone, title: "Call recorded & transcribed", desc: "Fathom auto-joins every Zoom/Meet/Teams call. Transcript sent via webhook to Make.com.", badge: "Fathom", badgeColor: "purple", accent: "purple" },
+                { icon: Bot, title: "Claude reads transcript", desc: "Extracts: pain level (1-10), interest (hot/warm/cold), objection, decision timeline, next step, budget signal. Auto-updates Notion deal.", badge: "Claude API", badgeColor: "teal", accent: "teal" },
+                { icon: MessageSquare, title: "AI follow-up drafted", desc: "Personalized follow-up within 2 minutes. References discussion, confirms pain, states next step. Draft to Slack for one-click approval.", badge: ["Claude API", "Slack"], badgeColor: ["teal", "blue"], accent: "blue" },
+              ].map((step, i) => (
+                <div key={i}>
+                  <NodeCard {...step} subtitle={step.desc} />
+                  {i < 2 && <div className="py-1"><CurvedVLine height={36} /></div>}
+                </div>
+              ))}
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <div className="py-2"><CurvedBranchLines /></div>
+              <SectionLabel step="2" label="Ongoing deal intelligence" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <NodeCard icon={Bell} title="Stale deal detection" subtitle="Make.com runs daily at 8am. No update in 5+ days → stage set to 'Stale' → Claude writes re-engagement draft → Slack approval." badge={["Daily 8am", "Make.com"]} badgeColor={["amber", "orange"]} accent="amber" />
+                <NodeCard icon={RotateCcw} title="Re-engagement triggers" subtitle="Clay monitors cold deals: job change, funding news, LinkedIn activity, hiring spike, company milestone → Claude writes new-angle message." badge={["Clay signals", "Auto-trigger"]} badgeColor={["teal", "green"]} accent="green" pulse />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="mt-5"><CurvedMergeLines /></div>
+              <SectionLabel step="3" label="Deal stages (Notion pipeline)" />
+              <div className="flex flex-wrap items-center gap-2">
+                {[
+                  { label: "Meeting booked", color: "bg-sky-50 text-sky-700 border-sky-200/60" },
+                  { label: "Met", color: "bg-indigo-50 text-indigo-700 border-indigo-200/60" },
+                  { label: "Proposal sent", color: "bg-violet-50 text-violet-700 border-violet-200/60" },
+                  { label: "Negotiating", color: "bg-amber-50 text-amber-700 border-amber-200/60" },
+                  { label: "Won", color: "bg-emerald-50 text-emerald-700 border-emerald-200/60" },
+                ].map((s, i, arr) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className={`text-[11px] font-semibold px-3 py-1.5 rounded-full border ${s.color}`}>{s.label}</span>
+                    {i < arr.length - 1 && <ChevronRight className="w-3.5 h-3.5 text-slate-300" />}
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+          </div>
+        )}
+
+        {/* ═══════ ICP & TAM TAB (unchanged) ═══════ */}
+        {activeTab === "icp" && (
+          <div>
+            <FadeIn delay={0.05}>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                {[
+                  { label: "Verified bookings", value: "$1.5B+", icon: Activity },
+                  { label: "Media partners", value: "60+", icon: Eye },
+                  { label: "Avg hotel ROI", value: "10-30×", icon: TrendingUp },
+                  { label: "Newsletter reach", value: "25M+", icon: Mail },
+                ].map((s, i) => (
+                  <div key={i} className="bg-white/60 backdrop-blur-md border border-slate-200/40 rounded-2xl p-4 hover:border-slate-300/60 transition-colors">
+                    <s.icon className="w-4 h-4 text-slate-400 mb-2" />
+                    <div className="text-[10.5px] text-slate-500">{s.label}</div>
+                    <div className="text-[20px] font-black text-slate-900 tracking-tight">{s.value}</div>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <SectionLabel step="1" label="Target industries" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <NodeCard icon={Building2} title="Luxury & lifestyle hotels" subtitle="Independent properties, boutique chains, luxury resorts needing upper-funnel demand beyond OTAs." badge="VP Marketing, CMO, Revenue Director" badgeColor="teal" accent="teal" />
+                <NodeCard icon={Building2} title="Hotel management companies" subtitle="Multi-property groups managing 5-50+ hotels. Portfolio-level onboarding." badge="VP Commercial Strategy" badgeColor="blue" accent="blue" />
+                <NodeCard icon={Ship} title="Cruise lines" subtitle="Luxury/expedition brands. $110B market by 2033. 85% of Americans haven't cruised." badge="VP Marketing, Head of Partnerships" badgeColor="purple" accent="purple" />
+                <NodeCard icon={MapPin} title="Destination marketing orgs" subtitle="State/city tourism boards, resort destination groups needing media visibility." badge="Executive Director, CMO" badgeColor="amber" accent="amber" />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <SectionLabel step="2" label="Lead sources" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                <NodeCard icon={Users} title="Apollo.io" subtitle="Filter: hospitality, hotel management, travel tech. Titles: VP Marketing, CMO, Revenue Dir." badge="Outbound lists" badgeColor="purple" accent="purple" />
+                <NodeCard icon={Database} title="Clay signals" subtitle="Job changes in hotel marketing, new GM hires, hotel openings, brand acquisitions." badge="Intent signals" badgeColor="teal" accent="teal" pulse />
+                <NodeCard icon={Globe} title="RB2B visitors" subtitle="Hospitality professionals already visiting curacity.com — highest-intent leads." badge="Inbound" badgeColor="green" accent="green" />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <SectionLabel step="3" label="Buying signals we monitor" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { icon: Building2, title: "New hotel opening / renovation", desc: "Properties launching need media visibility from day one — perfect VISTA timing.", accent: "teal" },
+                  { icon: Users, title: "Marketing leadership hire", desc: "New CMO/VP Marketing = new budget priorities. They want to prove ROI fast.", accent: "blue" },
+                  { icon: TrendingUp, title: "OTA dependency concern", desc: "Hotels posting about reducing OTA commission = ready for direct channel alternatives.", accent: "amber" },
+                  { icon: Eye, title: "AI search visibility interest", desc: "Hotels discussing LLM visibility, ChatGPT recommendations = VISTA AI sweet spot.", accent: "purple" },
+                ].map((s, i) => (
+                  <NodeCard key={i} {...s} subtitle={s.desc} />
+                ))}
+              </div>
+            </FadeIn>
+          </div>
+        )}
+
+        {/* ═══ MODULE 3: Evidence Vault ═══ */}
+        <EvidenceVault />
+
+        {/* ── Footer (unchanged) ── */}
+        <FadeIn delay={0.3}>
+          <div className="mt-12 pt-6 border-t border-slate-200/40 text-center">
+            <p className="text-[11px] text-slate-400">
+              Ascendly Revenue Automation • Built for Curacity • % deal model — zero upfront
+            </p>
+          </div>
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
