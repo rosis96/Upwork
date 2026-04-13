@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ascendly × Curacity — Revenue Automation Workflow</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1); }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .tag-x { opacity: 0; transition: opacity 0.15s; }
+  .tag-pill:hover .tag-x { opacity: 1; }
+  .node-card { transition: box-shadow 0.5s, border-color 0.5s; }
+  .node-card:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.06); border-color: rgba(203,213,225,0.8); }
+  .node-card .accent-bar { transition: opacity 0.3s; opacity: 0.6; }
+  .node-card:hover .accent-bar { opacity: 1; }
+  .upload-zone:hover { border-color: rgba(45,212,191,0.4); background: rgba(45,212,191,0.03); }
+  .upload-zone:hover .upload-icon { color: #2DD4BF; border-color: rgba(45,212,191,0.3); background: rgba(45,212,191,0.1); }
+  .upload-zone:hover .upload-text { color: #CBD5E1; }
+  @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+  .animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+</style>
+</head>
+<body>
+<div class="relative min-h-screen overflow-hidden">
+
+  <!-- ── BG mesh ── -->
+  <div class="fixed inset-0 -z-10" style="background:linear-gradient(135deg,#F8FAFC 0%,#EFF6FF 40%,#F0F9FF 70%,#F8FAFC 100%)">
+    <div class="absolute rounded-full opacity-30" style="top:-20%;right:-10%;width:800px;height:800px;background:radial-gradient(circle,#A5F3FC 0%,transparent 70%)"></div>
+    <div class="absolute rounded-full opacity-20" style="bottom:-10%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,#C4B5FD 0%,transparent 70%)"></div>
+    <div class="absolute rounded-full opacity-15" style="top:30%;left:40%;width:500px;height:500px;background:radial-gradient(circle,#99F6E4 0%,transparent 70%)"></div>
+    <svg width="100%" height="100%" class="opacity-[0.35]"><defs><pattern id="dotgrid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.6" fill="#94A3B8"/></pattern></defs><rect width="100%" height="100%" fill="url(#dotgrid)"/></svg>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+
+    <!-- ══════ HEADER ══════ -->
+    <div class="fade-in" data-delay="0">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-teal-600 bg-teal-50/80 backdrop-blur-sm border border-teal-200/40 rounded-full px-3.5 py-1.5 mb-5">
+          <i data-lucide="sparkles" class="w-3 h-3"></i>
+          Ascendly × Curacity
+        </div>
+        <h1 class="text-[clamp(28px,5vw,44px)] font-black text-slate-900 leading-[1.05] tracking-[-0.035em] mb-3">
+          Revenue automation<br/>
+          <span style="background:linear-gradient(to right,#14B8A6,#06B6D4,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent">workflow</span>
+        </h1>
+        <p class="text-sm sm:text-[15px] text-slate-500 max-w-lg mx-auto leading-relaxed">Full pipeline: inbound capture, outbound sequences, AI-powered follow-up, and deal intelligence — built for Curacity's hospitality sales motion.</p>
+        <div class="flex items-center justify-center gap-3 mt-6">
+          <button class="inline-flex items-center gap-2 bg-slate-900 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-300">View full pipeline <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
+          <button class="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm text-slate-700 text-[13px] font-semibold px-5 py-2.5 rounded-full border border-slate-200/60 hover:bg-white hover:border-slate-300 transition-all duration-300"><i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Metrics</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ MODULE 1: TAM & ICP CONTROL PANEL ══════ -->
+    <div class="fade-in" data-delay="0.05">
+      <div class="mb-10">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="crosshair" class="w-4 h-4 text-teal-500"></i>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">TAM & ICP control panel</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <!-- Left: tags -->
+          <div class="md:col-span-3 bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-[13px] font-bold text-slate-900 tracking-tight">Target industries</h3>
+              <span id="tagCount" class="text-[10px] text-slate-400 font-medium">6 active</span>
+            </div>
+            <div id="tagContainer" class="flex flex-wrap gap-2 mb-3"></div>
+            <div class="flex gap-2">
+              <input id="tagInput" placeholder="Add industry…" class="flex-1 text-[12px] px-3 py-2 rounded-xl bg-white/80 border border-slate-200/60 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-teal-300 focus:ring-1 focus:ring-teal-200 transition-all" />
+              <button id="tagAddBtn" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors"><i data-lucide="plus" class="w-3 h-3"></i> Add</button>
+            </div>
+          </div>
+          <!-- Right: counter -->
+          <div class="md:col-span-2 relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1),0_8px_24px_rgba(0,0,0,0.15)]">
+            <div class="absolute rounded-full bg-teal-400/20 blur-3xl" style="top:-30%;right:-20%;width:192px;height:192px"></div>
+            <div class="absolute rounded-full bg-cyan-400/15 blur-2xl" style="bottom:-20%;left:-10%;width:144px;height:144px"></div>
+            <div class="relative">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-teal-400"></span></span>
+                <span class="text-[10px] font-semibold uppercase tracking-[0.1em] text-teal-400/90">Live pipeline</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mb-3">Verified prospects in target TAM</div>
+              <div id="prospectCounter" class="text-[42px] sm:text-[52px] font-black tracking-[-0.04em] leading-none" style="background:linear-gradient(135deg,#5EEAD4 0%,#22D3EE 40%,#818CF8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(94,234,212,0.3))">14,282</div>
+              <div class="flex items-center gap-3 mt-3">
+                <div class="flex items-center gap-1 text-[10px] text-emerald-400 font-medium"><i data-lucide="trending-up" class="w-3 h-3"></i> +12.4% this week</div>
+                <div class="w-px h-3 bg-slate-700"></div>
+                <div id="industryCountLabel" class="text-[10px] text-slate-500">across 6 industries</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ TAB BAR ══════ -->
+    <div class="fade-in" data-delay="0.1">
+      <div id="tabBar" class="flex items-center gap-1 bg-white/50 backdrop-blur-md border border-slate-200/40 rounded-2xl p-1.5 mb-8 max-w-xl mx-auto">
+        <button data-tab="inbound" class="tab-btn active flex-1 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-semibold py-2.5 rounded-xl transition-all duration-300 bg-slate-900 text-white shadow-sm"><i data-lucide="trending-up" class="w-3.5 h-3.5 hidden sm:block"></i> Inbound pipeline</button>
+        <button data-tab="outbound" class="tab-btn flex-1 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-semibold py-2.5 rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-700 hover:bg-white/60"><i data-lucide="mail" class="w-3.5 h-3.5 hidden sm:block"></i> Outbound engine</button>
+        <button data-tab="ailoop" class="tab-btn flex-1 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-semibold py-2.5 rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-700 hover:bg-white/60"><i data-lucide="bot" class="w-3.5 h-3.5 hidden sm:block"></i> AI follow-up loop</button>
+        <button data-tab="icp" class="tab-btn flex-1 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-semibold py-2.5 rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-700 hover:bg-white/60"><i data-lucide="users" class="w-3.5 h-3.5 hidden sm:block"></i> ICP & TAM</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         INBOUND TAB
+         ═══════════════════════════════════════ -->
+    <div id="tab-inbound" class="tab-panel active">
+      <!-- Step 1: Lead Sources -->
+      <div class="fade-in" data-delay="0.05">
+        <div class="flex items-center gap-2.5 mb-4"><div class="flex items-center justify-center w-6 h-6 rounded-lg bg-slate-900 text-white text-[10px] font-bold">1</div><span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">Lead sources</span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Node: Website visitors -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="relative flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center shadow-sm">
+                <i data-lucide="globe" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i>
+                <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white shadow-sm"><span class="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-50"></span></span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">Website visitors</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Anonymous hotel & cruise decision-makers visiting curacity.com identified by IP</p>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border bg-teal-50 text-teal-700 border-teal-200/60">RB2B</span></div>
+          </div>
+          <!-- Node: Demo requests -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-sm"><i data-lucide="file-text" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">Demo requests</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">VISTA demo form fills, pipeline audit requests from curacity.com</p>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">Webhook</span></div>
+          </div>
+          <!-- Node: Content downloads -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-violet-500 to-purple-500 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center shadow-sm"><i data-lucide="download" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">Content downloads</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Skift research, Cornell study PDFs, blog subscribers, webinar signups</p>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">Webhook</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Curved merge lines -->
+      <div class="fade-in py-1" data-delay="0.1">
+        <svg width="100%" height="64" viewBox="0 0 800 64" preserveAspectRatio="xMidYMid meet" style="overflow:visible;display:block">
+          <defs><marker id="mkM1" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L4 7L7 1" fill="none" stroke="#94A3B8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <path id="im1" d="M134 0C134 20,400 20,400 38" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+          <path id="im2" d="M400 0C400 14,400 26,400 38" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+          <path id="im3" d="M666 0C666 20,400 20,400 38" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+          <path d="M400 38C400 44,400 52,400 58" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkM1)"/>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#im1"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#im1"/></animateMotion></circle>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#im2"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#im2"/></animateMotion></circle>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.4s"><mpath href="#im3"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.4s"><mpath href="#im3"/></animateMotion></circle>
+        </svg>
+      </div>
+
+      <!-- Step 2: Processing Hub -->
+      <div class="fade-in" data-delay="0.15">
+        <div class="flex items-center gap-2.5 mb-4"><div class="flex items-center justify-center w-6 h-6 rounded-lg bg-slate-900 text-white text-[10px] font-bold">2</div><span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">Processing hub</span></div>
+        <div class="relative bg-white/50 backdrop-blur-lg border border-slate-200/50 rounded-3xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.03),0_16px_40px_rgba(0,0,0,0.04)]">
+          <div class="absolute top-0 left-8 right-8 h-[2px] rounded-full bg-gradient-to-r from-teal-400 via-blue-500 to-violet-500 opacity-50"></div>
+          <div class="flex items-center gap-2 mb-5">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
+            <span class="text-[13px] font-bold text-slate-900 tracking-tight">Enrichment & routing</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200/60 ml-auto">Make.com</span>
+          </div>
+          <div class="flex items-center gap-0">
+            <!-- Clay -->
+            <div class="flex items-center flex-1 min-w-0">
+              <div class="flex-1 bg-white/80 border border-slate-100 rounded-xl p-3.5 hover:border-slate-200 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center mb-2"><i data-lucide="database" class="w-4 h-4 text-white" style="stroke-width:1.8"></i></div>
+                <div class="text-[12px] font-semibold text-slate-800">Clay enrichment</div>
+                <div class="text-[10.5px] text-slate-500 mt-0.5 leading-relaxed">Job title, company size, hotel count, revenue signals, tech stack</div>
+              </div>
+              <div class="flex-shrink-0 px-1">
+                <svg width="32" height="24" style="overflow:visible"><defs><marker id="mkH1" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><path id="ih1" d="M0 12C12 12,20 12,26 12" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkH1)"/><circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#ih1"/></animateMotion></circle><circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#ih1"/></animateMotion></circle></svg>
+              </div>
+            </div>
+            <!-- Reoon -->
+            <div class="flex items-center flex-1 min-w-0">
+              <div class="flex-1 bg-white/80 border border-slate-100 rounded-xl p-3.5 hover:border-slate-200 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center mb-2"><i data-lucide="shield-check" class="w-4 h-4 text-white" style="stroke-width:1.8"></i></div>
+                <div class="text-[12px] font-semibold text-slate-800">Reoon verify</div>
+                <div class="text-[10.5px] text-slate-500 mt-0.5 leading-relaxed">Real-time email validation, invalid leads discarded</div>
+              </div>
+              <div class="flex-shrink-0 px-1">
+                <svg width="32" height="24" style="overflow:visible"><path id="ih2" d="M0 12C12 12,20 12,26 12" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkH1)"/><circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.3s"><mpath href="#ih2"/></animateMotion></circle><circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.3s"><mpath href="#ih2"/></animateMotion></circle></svg>
+              </div>
+            </div>
+            <!-- ICP Scoring -->
+            <div class="flex-1 min-w-0">
+              <div class="bg-white/80 border border-slate-100 rounded-xl p-3.5 hover:border-slate-200 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center mb-2"><i data-lucide="target" class="w-4 h-4 text-white" style="stroke-width:1.8"></i></div>
+                <div class="text-[12px] font-semibold text-slate-800">ICP scoring</div>
+                <div class="text-[10.5px] text-slate-500 mt-0.5 leading-relaxed">Company size + title + industry match + funding signals</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Curved branch lines -->
+      <div class="fade-in py-1" data-delay="0.2">
+        <svg width="100%" height="64" viewBox="0 0 800 64" preserveAspectRatio="xMidYMid meet" style="overflow:visible;display:block">
+          <defs><marker id="mkB1" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L4 7L7 1" fill="none" stroke="#94A3B8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <path d="M400 0C400 8,400 12,400 20" fill="none" stroke="#CBD5E1" stroke-width="1"/>
+          <path id="ib1" d="M400 20C400 34,134 34,134 56" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkB1)"/>
+          <path id="ib2" d="M400 20C400 34,400 40,400 56" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkB1)"/>
+          <path id="ib3" d="M400 20C400 34,666 34,666 56" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkB1)"/>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#ib1"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#ib1"/></animateMotion></circle>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.4s" repeatCount="indefinite" begin="0.3s"><mpath href="#ib2"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.4s" repeatCount="indefinite" begin="0.3s"><mpath href="#ib2"/></animateMotion></circle>
+          <circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.6s"><mpath href="#ib3"/></animateMotion></circle>
+          <circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.6s"><mpath href="#ib3"/></animateMotion></circle>
+        </svg>
+      </div>
+
+      <!-- Step 3: Routing Actions -->
+      <div class="fade-in" data-delay="0.25">
+        <div class="flex items-center gap-2.5 mb-4"><div class="flex items-center justify-center w-6 h-6 rounded-lg bg-slate-900 text-white text-[10px] font-bold">3</div><span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">Routing actions</span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- LinkedIn DM -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-400 flex items-center justify-center shadow-sm"><i data-lucide="linkedin" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">LinkedIn DM</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">VP Marketing, Revenue Directors at hotel chains — high-value, personal outreach</p>
+                <div class="mt-2 flex items-center gap-1.5"><div class="w-full bg-emerald-100 rounded-full h-1.5"><div class="bg-gradient-to-r from-emerald-400 to-teal-400 h-1.5 rounded-full" style="width:85%"></div></div><span class="text-[10px] text-emerald-600 font-medium whitespace-nowrap">Hot</span></div>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200/60">Score 8-10</span><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-teal-50 text-teal-700 border-teal-200/60">Aimfox</span></div>
+          </div>
+          <!-- Cold email -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-sm"><i data-lucide="mail" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">Cold email</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Marketing managers, commercial strategy leads — AI-personalized sequences</p>
+                <div class="mt-2 flex items-center gap-1.5"><div class="w-full bg-blue-100 rounded-full h-1.5"><div class="bg-gradient-to-r from-blue-400 to-indigo-400 h-1.5 rounded-full" style="width:60%"></div></div><span class="text-[10px] text-blue-600 font-medium whitespace-nowrap">Warm</span></div>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">Score 5-7</span><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">Instantly</span></div>
+          </div>
+          <!-- Hold list -->
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]">
+            <div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-amber-400 to-orange-400 rounded-full"></div>
+            <div class="flex items-start gap-3.5">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center shadow-sm"><i data-lucide="pause" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight leading-snug">Hold list</h3>
+                <p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Nurture sequence, quarterly re-check, low-intent signals re-monitored</p>
+                <div class="mt-2 flex items-center gap-1.5"><div class="w-full bg-amber-100 rounded-full h-1.5"><div class="bg-gradient-to-r from-amber-300 to-orange-300 h-1.5 rounded-full" style="width:30%"></div></div><span class="text-[10px] text-amber-600 font-medium whitespace-nowrap">Cool</span></div>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5"><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-slate-100 text-slate-600 border-slate-200/60">Score 1-4</span><span class="inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200/60">Nurture</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meeting booked -->
+      <div class="fade-in" data-delay="0.3">
+        <div class="mt-4">
+          <svg width="24" height="40" class="mx-auto block" style="overflow:visible"><defs><marker id="mkV1" viewBox="0 0 8 8" refX="4" refY="8" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L4 7L7 1" fill="none" stroke="#94A3B8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><path id="iv1" d="M12 0C12 12,12 28,12 34" fill="none" stroke="#CBD5E1" stroke-width="1" marker-end="url(#mkV1)"/><circle r="7" fill="#2DD4BF" opacity="0.2"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#iv1"/></animateMotion></circle><circle r="3.5" fill="#2DD4BF" opacity="0.9"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#iv1"/></animateMotion></circle></svg>
+        </div>
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 text-white text-[13px] font-semibold px-6 py-3 rounded-2xl shadow-lg shadow-slate-900/10">
+            <i data-lucide="calendar" class="w-4 h-4"></i> Meeting booked via Calendly <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         OUTBOUND TAB (simplified for brevity — same structure)
+         ═══════════════════════════════════════ -->
+    <div id="tab-outbound" class="tab-panel">
+      <div class="fade-in visible" data-delay="0">
+        <div class="text-center py-16">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center mb-4"><i data-lucide="mail" class="w-6 h-6 text-white"></i></div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Outbound engine</h3>
+          <p class="text-[13px] text-slate-500 max-w-md mx-auto">Apollo.io list build → Reoon verify → Claude AI personalization → parallel cold email (Instantly) + LinkedIn DM (Aimfox) sequences → Calendly booking</p>
+          <div class="flex flex-wrap justify-center gap-2 mt-4">
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-violet-50 text-violet-700 border border-violet-200/60">Apollo.io</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60">Reoon</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200/60">Instantly</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-violet-50 text-violet-700 border border-violet-200/60">Aimfox</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200/60">Claude API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         AI LOOP TAB
+         ═══════════════════════════════════════ -->
+    <div id="tab-ailoop" class="tab-panel">
+      <div class="fade-in visible" data-delay="0">
+        <div class="text-center py-16">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center mb-4"><i data-lucide="bot" class="w-6 h-6 text-white"></i></div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">AI follow-up loop</h3>
+          <p class="text-[13px] text-slate-500 max-w-md mx-auto">Fathom call recording → Claude transcript analysis (pain, interest, objections, timeline) → auto-drafted follow-up → Slack approval → stale deal detection (daily 8am) → Clay signal re-engagement</p>
+          <div class="flex flex-wrap justify-center gap-2 mt-4">
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-violet-50 text-violet-700 border border-violet-200/60">Fathom</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60">Claude API</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200/60">Slack</span>
+            <span class="text-[10px] font-medium px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200/60">Make.com</span>
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+            <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">Meeting booked</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
+            <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full border bg-indigo-50 text-indigo-700 border-indigo-200/60">Met</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
+            <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full border bg-violet-50 text-violet-700 border-violet-200/60">Proposal sent</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
+            <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200/60">Negotiating</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
+            <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200/60">Won</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         ICP TAB
+         ═══════════════════════════════════════ -->
+    <div id="tab-icp" class="tab-panel">
+      <div class="fade-in visible" data-delay="0">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          <div class="bg-white/60 backdrop-blur-md border border-slate-200/40 rounded-2xl p-4"><i data-lucide="activity" class="w-4 h-4 text-slate-400 mb-2"></i><div class="text-[10.5px] text-slate-500">Verified bookings</div><div class="text-[20px] font-black text-slate-900 tracking-tight">$1.5B+</div></div>
+          <div class="bg-white/60 backdrop-blur-md border border-slate-200/40 rounded-2xl p-4"><i data-lucide="eye" class="w-4 h-4 text-slate-400 mb-2"></i><div class="text-[10.5px] text-slate-500">Media partners</div><div class="text-[20px] font-black text-slate-900 tracking-tight">60+</div></div>
+          <div class="bg-white/60 backdrop-blur-md border border-slate-200/40 rounded-2xl p-4"><i data-lucide="trending-up" class="w-4 h-4 text-slate-400 mb-2"></i><div class="text-[10.5px] text-slate-500">Avg hotel ROI</div><div class="text-[20px] font-black text-slate-900 tracking-tight">10-30×</div></div>
+          <div class="bg-white/60 backdrop-blur-md border border-slate-200/40 rounded-2xl p-4"><i data-lucide="mail" class="w-4 h-4 text-slate-400 mb-2"></i><div class="text-[10.5px] text-slate-500">Newsletter reach</div><div class="text-[20px] font-black text-slate-900 tracking-tight">25M+</div></div>
+        </div>
+        <div class="flex items-center gap-2.5 mb-4"><div class="flex items-center justify-center w-6 h-6 rounded-lg bg-slate-900 text-white text-[10px] font-bold">1</div><span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">Target industries</span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]"><div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"></div><div class="flex items-start gap-3.5"><div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center shadow-sm"><i data-lucide="building-2" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div><div class="flex-1"><h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight">Luxury & lifestyle hotels</h3><p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Independent properties, boutique chains, luxury resorts needing upper-funnel demand beyond OTAs.</p></div></div><div class="mt-3"><span class="text-[10px] font-medium px-2 py-0.5 rounded-full border bg-teal-50 text-teal-700 border-teal-200/60">VP Marketing, CMO, Revenue Director</span></div></div>
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]"><div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div><div class="flex items-start gap-3.5"><div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-sm"><i data-lucide="building-2" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div><div class="flex-1"><h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight">Hotel management companies</h3><p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Multi-property groups managing 5-50+ hotels. Portfolio-level onboarding.</p></div></div><div class="mt-3"><span class="text-[10px] font-medium px-2 py-0.5 rounded-full border bg-sky-50 text-sky-700 border-sky-200/60">VP Commercial Strategy</span></div></div>
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]"><div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-violet-500 to-purple-500 rounded-full"></div><div class="flex items-start gap-3.5"><div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center shadow-sm"><i data-lucide="ship" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div><div class="flex-1"><h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight">Cruise lines</h3><p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">Luxury/expedition brands. $110B market by 2033. 85% of Americans haven't cruised.</p></div></div><div class="mt-3"><span class="text-[10px] font-medium px-2 py-0.5 rounded-full border bg-violet-50 text-violet-700 border-violet-200/60">VP Marketing, Head of Partnerships</span></div></div>
+          <div class="node-card group relative bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]"><div class="accent-bar absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-amber-400 to-orange-400 rounded-full"></div><div class="flex items-start gap-3.5"><div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center shadow-sm"><i data-lucide="map-pin" class="w-[18px] h-[18px] text-white" style="stroke-width:1.8"></i></div><div class="flex-1"><h3 class="text-[13.5px] font-semibold text-slate-900 tracking-tight">Destination marketing orgs</h3><p class="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">State/city tourism boards, resort destination groups needing media visibility.</p></div></div><div class="mt-3"><span class="text-[10px] font-medium px-2 py-0.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200/60">Executive Director, CMO</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ MODULE 3: EVIDENCE VAULT ══════ -->
+    <div class="fade-in mt-16 -mx-4 sm:-mx-6" data-delay="0.1">
+      <div class="rounded-3xl overflow-hidden" style="background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%)">
+        <div class="relative px-6 sm:px-10 py-12 sm:py-16 overflow-hidden">
+          <div class="absolute rounded-full bg-teal-500/[0.08] blur-3xl" style="top:-20%;right:10%;width:288px;height:288px"></div>
+          <div class="absolute rounded-full bg-indigo-500/[0.08] blur-3xl" style="bottom:-10%;left:5%;width:224px;height:224px"></div>
+          <div class="relative grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <!-- Left text -->
+            <div>
+              <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-teal-400 bg-teal-500/10 border border-teal-500/20 rounded-full px-3 py-1.5 mb-5"><i data-lucide="shield" class="w-3 h-3"></i> Evidence vault</div>
+              <h2 class="text-[clamp(22px,4vw,32px)] font-black text-white leading-[1.1] tracking-[-0.03em] mb-4">Performance<br/><span style="background:linear-gradient(to right,#2DD4BF,#22D3EE,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent">proof</span></h2>
+              <p class="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-sm">Real campaign screenshots, reply threads, and booked meetings. Every result is documented and verifiable — upload your live data to showcase pipeline impact.</p>
+              <div class="flex flex-wrap gap-4">
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-teal-400"></i></div><div><div class="text-[14px] font-bold text-white tracking-tight">340+</div><div class="text-[10px] text-slate-500">Verified replies</div></div></div>
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i data-lucide="calendar" class="w-3.5 h-3.5 text-teal-400"></i></div><div><div class="text-[14px] font-bold text-white tracking-tight">89</div><div class="text-[10px] text-slate-500">Meetings booked</div></div></div>
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center"><i data-lucide="clock" class="w-3.5 h-3.5 text-teal-400"></i></div><div><div class="text-[14px] font-bold text-white tracking-tight">2.4 hrs</div><div class="text-[10px] text-slate-500">Avg response</div></div></div>
+              </div>
+            </div>
+            <!-- Right: browser mockup -->
+            <div class="relative">
+              <div class="bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 rounded-2xl overflow-hidden shadow-2xl shadow-black/30">
+                <div class="flex items-center gap-2 px-4 py-3 bg-slate-800/90 border-b border-slate-700/50">
+                  <div class="flex gap-1.5">
+                    <div class="w-[10px] h-[10px] rounded-full bg-[#FF5F57]"></div>
+                    <div class="w-[10px] h-[10px] rounded-full bg-[#FFBD2E]"></div>
+                    <div class="w-[10px] h-[10px] rounded-full bg-[#28C840]"></div>
+                  </div>
+                  <div class="flex-1 mx-4"><div class="bg-slate-700/60 rounded-lg px-3 py-1 flex items-center gap-2 max-w-[260px] mx-auto"><div class="w-2.5 h-2.5 rounded-full bg-emerald-500/60"></div><span class="text-[10px] text-slate-400 truncate">app.instantly.ai/campaign/curacity-vista</span></div></div>
+                </div>
+                <div class="p-5 sm:p-6">
+                  <div class="upload-zone border-2 border-dashed border-slate-600/60 rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center min-h-[200px] transition-all duration-500 cursor-pointer">
+                    <div class="upload-icon w-14 h-14 rounded-2xl bg-slate-700/50 border border-slate-600/40 flex items-center justify-center mb-4 transition-all duration-500"><i data-lucide="upload" class="w-6 h-6 text-slate-500 transition-colors duration-500"></i></div>
+                    <p class="upload-text text-[13px] font-semibold text-slate-400 transition-colors mb-1">Drop campaign screenshots here</p>
+                    <p class="text-[11px] text-slate-600">PNG, JPG up to 10MB — reply threads, dashboards, booked meetings</p>
+                    <div class="flex items-center gap-2 mt-4"><div class="inline-flex items-center gap-1.5 text-[10px] font-medium px-3 py-1.5 rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/40"><i data-lucide="image" class="w-3 h-3"></i> Browse files</div></div>
+                  </div>
+                  <div class="flex gap-2 mt-4">
+                    <div class="flex-1 h-14 rounded-lg bg-slate-700/30 border border-slate-600/30 flex items-center justify-center"><div class="text-[9px] text-slate-600 font-medium">Screenshot 1</div></div>
+                    <div class="flex-1 h-14 rounded-lg bg-slate-700/30 border border-slate-600/30 flex items-center justify-center"><div class="text-[9px] text-slate-600 font-medium">Screenshot 2</div></div>
+                    <div class="flex-1 h-14 rounded-lg bg-slate-700/30 border border-slate-600/30 flex items-center justify-center"><div class="text-[9px] text-slate-600 font-medium">Screenshot 3</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="fade-in mt-12 pt-6 border-t border-slate-200/40 text-center" data-delay="0.3">
+      <p class="text-[11px] text-slate-400">Ascendly Revenue Automation • Built for Curacity • % deal model — zero upfront</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── Initialize Lucide icons ──
+  lucide.createIcons();
+
+  // ── Scroll-triggered fade-in ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const d = e.target.dataset.delay || 0;
+        e.target.style.transitionDelay = d + 's';
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Tab switching ──
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active', 'bg-slate-900', 'text-white', 'shadow-sm');
+        b.classList.add('text-slate-500');
+      });
+      btn.classList.add('active', 'bg-slate-900', 'text-white', 'shadow-sm');
+      btn.classList.remove('text-slate-500');
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      // Re-init lucide for newly visible panel
+      lucide.createIcons();
+    });
+  });
+
+  // ── TAG system ──
+  let tags = ["Luxury hotels", "Boutique chains", "Cruise lines", "DMOs", "Hotel management cos", "Resort destinations"];
+
+  function renderTags() {
+    const c = document.getElementById('tagContainer');
+    c.innerHTML = '';
+    tags.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tag-pill inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-full bg-teal-50/80 text-teal-700 border border-teal-200/50 hover:border-teal-300 transition-colors';
+      span.innerHTML = t + '<button class="tag-x w-3.5 h-3.5 rounded-full bg-teal-200/60 hover:bg-teal-300 flex items-center justify-center" onclick="removeTag(\'' + t.replace(/'/g, "\\'") + '\')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#115e59" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+      c.appendChild(span);
+    });
+    document.getElementById('tagCount').textContent = tags.length + ' active';
+    document.getElementById('industryCountLabel').textContent = 'across ' + tags.length + ' industries';
+  }
+
+  function removeTag(t) {
+    tags = tags.filter(x => x !== t);
+    renderTags();
+  }
+
+  function addTag() {
+    const input = document.getElementById('tagInput');
+    const val = input.value.trim();
+    if (val && !tags.includes(val)) {
+      tags.push(val);
+      input.value = '';
+      renderTags();
+    }
+  }
+
+  document.getElementById('tagAddBtn').addEventListener('click', addTag);
+  document.getElementById('tagInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTag(); });
+  renderTags();
+
+  // ── Live counter ──
+  let counter = 14282;
+  setInterval(() => {
+    counter += Math.floor(Math.random() * 3) + 1;
+    document.getElementById('prospectCounter').textContent = counter.toLocaleString();
+  }, 2400);
+</script>
+</body>
+</html>
