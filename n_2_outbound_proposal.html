@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N2 LLC Proposal | Ascendly</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --paper: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #f2b233;
+      --accent-dark: #d99b17;
+      --soft: #fff8e6;
+      --ink: #1f2937;
+      --shadow: 0 18px 50px rgba(17, 24, 39, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    body {
+      padding: 32px 16px 64px;
+    }
+
+    .proposal {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 40px 48px 36px;
+      background:
+        radial-gradient(circle at top right, rgba(242,178,51,0.18), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #fffdf8 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(242,178,51,0.18);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #8a6100;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .doc-meta {
+      text-align: right;
+      color: var(--muted);
+      font-size: 14px;
+      min-width: 180px;
+      padding-top: 8px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 28px;
+      align-items: end;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 42px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    .subhead {
+      margin: 0;
+      max-width: 620px;
+      font-size: 17px;
+      color: #374151;
+    }
+
+    .highlight-card {
+      align-self: start;
+      border: 1px solid #f5d58b;
+      background: #fffaf0;
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .highlight-card h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #946200;
+    }
+
+    .highlight-card p {
+      margin: 0;
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 24px 48px 8px;
+      background: var(--paper);
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .content {
+      padding: 22px 48px 48px;
+    }
+
+    section {
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    section:first-child {
+      border-top: none;
+      padding-top: 12px;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      padding-top: 4px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .section-copy p {
+      margin: 0 0 14px;
+      color: #374151;
+      font-size: 16px;
+    }
+
+    .section-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: #fafafa;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .card ul,
+    .steps,
+    .price-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #374151;
+    }
+
+    .card li,
+    .steps li,
+    .price-list li {
+      margin-bottom: 8px;
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .price-card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      background: #fff;
+    }
+
+    .price-card.featured {
+      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
+      border-color: #f5d58b;
+    }
+
+    .price-label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-dark);
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-size: 40px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .price-sub {
+      color: #4b5563;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 18px;
+      align-items: start;
+      background: #fff;
+    }
+
+    .time-label {
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .time-copy {
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      border-radius: 24px;
+      padding: 24px;
+      background: #111827;
+      color: #f9fafb;
+    }
+
+    .footer-note p {
+      margin: 0 0 12px;
+      color: #e5e7eb;
+      font-size: 16px;
+    }
+
+    .footer-note p:last-child {
+      margin-bottom: 0;
+    }
+
+    .signature {
+      margin-top: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .stats,
+      .content {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero-grid,
+      .section-head,
+      .split,
+      .card-grid,
+      .pricing {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .doc-meta {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 12px 8px 32px; }
+      .proposal { border-radius: 20px; }
+      .hero { padding-top: 28px; }
+      h1 { font-size: 32px; }
+      .stats { grid-template-columns: 1fr; }
+      .time-row { grid-template-columns: 1fr; }
+      .doc-meta { padding-top: 0; }
+    }
+
+    @page {
+      size: A4;
+      margin: 18mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .proposal {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        max-width: none;
+      }
+
+      .hero,
+      .stat,
+      .card,
+      .price-card,
+      .time-row,
+      .footer-note {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="proposal">
+    <header class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">
+            <span class="brand-dot"></span>
+            <span>Ascendly</span>
+          </div>
+          <span class="eyebrow">Prepared for N2 LLC</span>
+        </div>
+        <div class="doc-meta">
+          <div><strong>Ascendly Proposal</strong></div>
+          <div>April 2026</div>
+          <div>Outbound Meeting Engine</div>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1>A practical outbound system built to create early pipeline for N2</h1>
+          <p class="subhead">
+            This proposal focuses on one thing only: controlled outbound execution to help N2 generate qualified sales meetings for its new energy management offer without adding unnecessary complexity upfront.
+          </p>
+        </div>
+
+        <aside class="highlight-card">
+          <h3>Core structure</h3>
+          <p>
+            N2 funds the infrastructure. Ascendly builds and operates the outbound system. Ascendly only charges per qualified attended meeting.
+          </p>
+        </aside>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <div class="value">$200</div>
+        <div class="label">Per qualified attended meeting</div>
+      </div>
+      <div class="stat">
+        <div class="value">5</div>
+        <div class="label">Meetings billed in batches of 5</div>
+      </div>
+      <div class="stat">
+        <div class="value">5–7</div>
+        <div class="label">Pilot meeting range</div>
+      </div>
+      <div class="stat">
+        <div class="value">10–12</div>
+        <div class="label">Growth meeting range</div>
+      </div>
+    </section>
+
+    <div class="content">
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Context</div>
+          <div class="section-copy">
+            <h2>What we understand about the current situation</h2>
+            <p>
+              N2 has shifted into energy management and is still early in the market transition. The offer itself is compelling, but current outbound efforts have not yet produced enough traction or meeting volume.
+            </p>
+            <p>
+              The immediate goal is not to build a large multi-channel growth engine yet. The immediate goal is to generate consistent sales conversations through a properly managed outbound system and create the first layer of pipeline.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Outbound-only focus</span>
+              <span class="pill">Lower-risk structure</span>
+              <span class="pill">Performance-based pricing</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Scope</div>
+          <div class="section-copy">
+            <h2>What this proposal covers</h2>
+            <div class="card-grid">
+              <article class="card">
+                <h3>1. Lead sourcing</h3>
+                <p>We build targeted prospect lists based on your ICP, verticals, titles, and buying relevance.</p>
+              </article>
+              <article class="card">
+                <h3>2. Personalization</h3>
+                <p>We enrich contacts, craft personalized messaging, and shape outreach around real business context.</p>
+              </article>
+              <article class="card">
+                <h3>3. Outreach ops</h3>
+                <p>We warm, rotate, monitor, and operate the outbound environment in a controlled way to protect performance.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Investment model</div>
+          <div class="section-copy">
+            <h2>How the commercial structure works</h2>
+            <p>
+              N2 owns the infrastructure. Ascendly builds and operates the outbound system on top of that infrastructure.
+            </p>
+            <p>
+              The client investment goes into the sending environment itself: domains, inboxes, sending tools, list sourcing, and campaign operations. Ascendly only charges for qualified attended meetings.
+            </p>
+            <div class="split">
+              <div class="card">
+                <h3>Client-funded infrastructure</h3>
+                <ul class="steps">
+                  <li>Domains</li>
+                  <li>Sending accounts</li>
+                  <li>Instantly / sending platform</li>
+                  <li>Lead sourcing and list operations</li>
+                  <li>Warm-up and deliverability setup</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Ascendly performance fee</h3>
+                <ul class="steps">
+                  <li>$200 per qualified attended meeting</li>
+                  <li>Billed in batches of 5 meetings</li>
+                  <li>No monthly retainer in this structure</li>
+                  <li>No charge until meetings are delivered</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Options</div>
+          <div class="section-copy">
+            <h2>Two outbound paths</h2>
+            <div class="pricing">
+              <div class="price-card featured">
+                <div class="price-label">Pilot outbound plan</div>
+                <div class="price">5–7</div>
+                <div class="price-sub">Qualified meetings within about 5 weeks / 36 days</div>
+                <ul class="price-list">
+                  <li>Initial infrastructure investment: about $600</li>
+                  <li>Estimated monthly infrastructure upkeep: about $360</li>
+                  <li>Meeting fee: $200 per attended meeting</li>
+                  <li>Meeting fee range: $1,000–$1,400</li>
+                  <li>Best fit for fast validation and first pipeline traction</li>
+                </ul>
+              </div>
+              <div class="price-card">
+                <div class="price-label">Growth outbound plan</div>
+                <div class="price">10–12</div>
+                <div class="price-sub">Qualified meetings per month once the system is fully operating</div>
+                <ul class="price-list">
+                  <li>Initial infrastructure investment: about $1,000</li>
+                  <li>Estimated monthly infrastructure upkeep from month 2: about $600</li>
+                  <li>Meeting fee: $200 per attended meeting</li>
+                  <li>Meeting fee range: $2,000–$2,400</li>
+                  <li>Best fit for building more consistent monthly pipeline</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Timeline</div>
+          <div class="section-copy">
+            <h2>How rollout happens</h2>
+            <div class="timeline">
+              <div class="time-row">
+                <div class="time-label">Week 1</div>
+                <div class="time-copy">Infrastructure is prepared: domains, inboxes, sending environment, prospect list preparation, messaging setup, and campaign structure.</div>
+              </div>
+              <div class="time-row">
+                <div class="time-label">Weeks 1–2</div>
+                <div class="time-copy">Warm-up, inbox preparation, list refinement, and message testing happen before launch volume increases.</div>
+              </div>
+              <div class="time-row">
+                <div class="time-label">Weeks 3–5</div>
+                <div class="time-copy">Outbound goes live in a controlled way, reply handling begins, and qualified meetings start getting routed in.</div>
+              </div>
+              <div class="time-row">
+                <div class="time-label">Month 2+</div>
+                <div class="time-copy">Once early traction is validated, volume can be maintained or scaled depending on results, cash flow, and closing progress.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Notes</div>
+          <div class="section-copy">
+            <h2>What the investment is designed to support</h2>
+            <p>
+              The smaller setup is designed to support a lower-cost pilot and create early proof. The larger setup is designed to support more consistent volume and a stronger monthly meeting range.
+            </p>
+            <p>
+              This proposal does not include the broader signal-based or website-visitor systems discussed conceptually. For now, this is a focused outbound effort built around current survival-stage priorities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-kicker">Next steps</div>
+          <div class="section-copy">
+            <h2>How we move forward</h2>
+            <div class="split">
+              <div class="card">
+                <h3>1. Choose the path</h3>
+                <p>Select either the 5–7 meeting pilot or the 10–12 meeting plan based on current cash availability and speed expectations.</p>
+              </div>
+              <div class="card">
+                <h3>2. Start setup</h3>
+                <p>Once the infrastructure budget is approved, we begin buildout, prep the outbound system, and move into warm-up and launch.</p>
+              </div>
+            </div>
+
+            <div class="footer-note">
+              <p>
+                This proposal is intentionally simple.
+              </p>
+              <p>
+                The goal here is not to overbuild. The goal is to get N2 into consistent sales conversations with a structure that keeps upfront risk lower and aligns cost with actual meeting delivery.
+              </p>
+              <p class="signature">Rosis Sitoula<br />Ascendly</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
